@@ -32,4 +32,4 @@ int main()
     printf("%15s\n%15d\n", "_________", a*b);
 
     return 0;
-}
+} 
