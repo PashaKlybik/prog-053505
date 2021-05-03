@@ -3,13 +3,6 @@
 
 #pragma warning(disable : 4996)
 
-int PowInt(int x, int n)
-{
-	int p = 1;
-	for (int i = 0; i < n; i++) p *= x;
-	return p;
-}
-
 void main() {
 	int k, temp = 0;
 	int count = 1, i = 2;
