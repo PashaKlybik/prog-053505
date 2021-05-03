@@ -16,7 +16,7 @@ void main() {
 
 	
 	printf("Enter the index: ");
-	for (int i = 0; i < 1; i++) { //ïðîâåðêà ââîäà
+	for (int i = 0; i < 1; i++) { //Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð²Ð²Ð¾Ð´Ð°
 		char eol = 0;
 		if (scanf("%d%c", &k, &eol) != 2 || eol != '\n' || k < 0) {
 			printf("Incorrect input, try again: \n");
