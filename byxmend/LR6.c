@@ -1,30 +1,30 @@
 #include<stdio.h>
-#include<math.h>
-#include<stdlib.h>
 #include<string.h>
 #include<malloc.h>
+#include<math.h>
+#include<stdlib.h>
 
-typedef struct binaryNode
+typedef struct binNode
 {
 	int num;
-	struct binaryNode* leftChild;
-	struct binaryNode* rightChild;
-	struct binaryNode* pNext;
-	struct binaryNode* pPrev;
-} BinaryNode;
+	struct binNode* leftChild;
+	struct binNode* rightChild;
+	struct binNode* pNext;
+	struct binNode* pPrev;
+} BinNode;
 
-BinaryNode* search(BinaryNode* currant, int index)
+BinNode* searchYzel(BinNode* currant, int i)
 {
-	if (currant->num == index)
+	if (currant->num == i)
 	{
 		return currant;
 	}
 
-	if (currant->num > index)
+	if (currant->num > i)
 	{
 		if (currant->leftChild)
 		{
-			return search(currant->leftChild, index);
+			return searchYzel(currant->leftChild, i);
 		}
 		else
 		{
@@ -32,11 +32,11 @@ BinaryNode* search(BinaryNode* currant, int index)
 		}
 	}
 
-	if (currant->num < index)
+	if (currant->num < i)
 	{
 		if (currant->rightChild)
 		{
-			return search(currant->rightChild, index);
+			return searchYzel(currant->rightChild, i);
 		}
 		else
 		{
@@ -45,18 +45,18 @@ BinaryNode* search(BinaryNode* currant, int index)
 	}
 }
 
-BinaryNode* searchPrev(BinaryNode* currant, int index, BinaryNode* Prev)
+BinNode* searchPrev(BinNode* currant, int i, BinNode* Prev)
 {
-	if (currant->num == index)
+	if (currant->num == i)
 	{
 		return Prev;
 	}
 
-	if (currant->num > index)
+	if (currant->num > i)
 	{
 		if (currant->leftChild)
 		{
-			return searchPrev(currant->leftChild, index, currant);
+			return searchPrev(currant->leftChild, i, currant);
 		}
 		else
 		{
@@ -64,11 +64,11 @@ BinaryNode* searchPrev(BinaryNode* currant, int index, BinaryNode* Prev)
 		}
 	}
 
-	if (currant->num < index)
+	if (currant->num < i)
 	{
 		if (currant->rightChild)
 		{
-			return searchPrev(currant->rightChild, index, currant);
+			return searchPrev(currant->rightChild, i, currant);
 		}
 		else
 		{
@@ -77,8 +77,32 @@ BinaryNode* searchPrev(BinaryNode* currant, int index, BinaryNode* Prev)
 	}
 }
 
+BinNode* findMin(BinNode* currant)
+{
+	if (currant->leftChild)
+	{
+		findMin(currant->leftChild);
+	}
+	else
+	{
+		return currant;
+	}
+}
+
+BinNode* findMax(BinNode* currant)
+{
+	if (currant->rightChild)
+	{
+		findMax(currant->rightChild);
+	}
+	else
+	{
+		return currant;
+	}
+}
+
 // проверка на наличие двух узлов после конкретного элемента
-int defineNode(BinaryNode* p)
+int defineNode(BinNode* p)
 {
 	if (p->leftChild || p->rightChild)
 	{
@@ -91,7 +115,7 @@ int defineNode(BinaryNode* p)
 }
 
 // удаление последнего узна
-void removeList(BinaryNode* currant, BinaryNode* pred)
+void removeList(BinNode* currant, BinNode* pred)
 {
 	if (pred->leftChild == currant)
 	{
@@ -103,46 +127,22 @@ void removeList(BinaryNode* currant, BinaryNode* pred)
 	}
 }
 
-BinaryNode* findMin(BinaryNode* currant)
-{
-	if (currant->leftChild)
-	{
-		findMin(currant->leftChild);
-	}
-	else
-	{
-		return currant;
-	}
-}
-
-BinaryNode* findMax(BinaryNode* currant)
-{
-	if (currant->rightChild)
-	{
-		findMax(currant->rightChild);
-	}
-	else
-	{
-		return currant;
-	}
-}
-
-void Remove(BinaryNode* root, int index)
+void Remove(BinNode* root, int i)
 {
 	int def;
 
-	BinaryNode* currant;
-	BinaryNode* pred = root;
+	BinNode* currant;
+	BinNode* pred = root;
 
-	currant = search(root, index);
+	currant = searchYzel(root, i);
 
 	if (currant != NULL && currant != root)
 	{
-		pred = searchPrev(root, index, pred);
+		pred = searchPrev(root, i, pred);
 		def = defineNode(currant);
 
-		BinaryNode* currantMaxElementInSubTree;
-		BinaryNode* predtMaxElementInSubTree;
+		BinNode* currantMaxElementInSubTree;
+		BinNode* predtMaxElementInSubTree;
 
 		if (def == 0)
 		{
@@ -208,9 +208,9 @@ void Remove(BinaryNode* root, int index)
 	}
 }
 
-void push(BinaryNode* currant, int num)
+void push(BinNode* currant, int num)
 {
-	BinaryNode* cheak = search(currant, num);
+	BinNode* cheak = searchYzel(currant, num);
 
 	if (cheak == NULL)
 	{
@@ -222,7 +222,7 @@ void push(BinaryNode* currant, int num)
 			}
 			else
 			{
-				BinaryNode* p = (BinaryNode*)malloc(sizeof(BinaryNode));
+				BinNode* p = (BinNode*)malloc(sizeof(BinNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
@@ -238,7 +238,7 @@ void push(BinaryNode* currant, int num)
 			}
 			else
 			{
-				BinaryNode* p = (BinaryNode*)malloc(sizeof(BinaryNode));
+				BinNode* p = (BinNode*)malloc(sizeof(BinNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
@@ -249,40 +249,30 @@ void push(BinaryNode* currant, int num)
 	}
 }
 
-// прямой обход
-void traversePrev(BinaryNode* currant)
+void combine(BinNode* firstRoot, BinNode* secondRoot)
 {
-	printf("%d\n", currant->num);
+	BinNode* buffer;
 
-	if (currant->leftChild)
+	buffer = searchYzel(firstRoot, secondRoot->num);
+
+	if (buffer == NULL)
 	{
-		traversePrev(currant->leftChild);
+		push(firstRoot, secondRoot->num);
 	}
 
-	if (currant->rightChild)
+	if (secondRoot->leftChild)
 	{
-		traversePrev(currant->rightChild);
-	}
-}
-
-// обратный обход
-void traverseObrat(BinaryNode* currant)
-{
-	if (currant->leftChild)
-	{
-		traverseObrat(currant->leftChild);
+		combine(firstRoot, secondRoot->leftChild);
 	}
 
-	if (currant->rightChild)
+	if (secondRoot->rightChild)
 	{
-		traverseObrat(currant->rightChild);
+		combine(firstRoot, secondRoot->rightChild);
 	}
-
-	printf("%d\n", currant->num);
 }
 
 // сим. обход
-void traverseSim(BinaryNode* currant)
+void traverseSim(BinNode* currant)
 {
 	if (currant->leftChild)
 	{
@@ -297,31 +287,42 @@ void traverseSim(BinaryNode* currant)
 	}
 }
 
-void combine(BinaryNode* root1, BinaryNode* root2)
+// прямой обход
+void traversePr(BinNode* currant)
 {
-	BinaryNode* buf;
-	buf = search(root1, root2->num);
+	printf("%d\n", currant->num);
 
-	if (buf == NULL)
+	if (currant->leftChild)
 	{
-		push(root1, root2->num);
+		traversePr(currant->leftChild);
 	}
 
-	if (root2->leftChild)
+	if (currant->rightChild)
 	{
-		combine(root1, root2->leftChild);
+		traversePr(currant->rightChild);
+	}
+}
+
+// обратный обход
+void traverseObr(BinNode* currant)
+{
+	if (currant->leftChild)
+	{
+		traverseObr(currant->leftChild);
 	}
 
-	if (root2->rightChild)
+	if (currant->rightChild)
 	{
-		combine(root1, root2->rightChild);
+		traverseObr(currant->rightChild);
 	}
+
+	printf("%d\n", currant->num);
 }
 
 int main()
 {
-	BinaryNode firstRoot = { 80, NULL, NULL };
-	BinaryNode secondRoot = { 40, NULL, NULL };
+	BinNode firstRoot = { 100, NULL, NULL };
+	BinNode secondRoot = { 100, NULL, NULL };
 	
 	// firstRoot
 	push(&firstRoot, 35);
@@ -351,11 +352,30 @@ int main()
 	push(&secondRoot, 67);
 	push(&secondRoot, 999);
 
+	printf("\nSim:\n\n");
 	printf("FirstRoot:\n");
-	traversePrev(&firstRoot);
-	printf("\n\nSecondRoot\n");
-	traversePrev(&secondRoot);
-	printf("\n\nGeneralRoot:\n");
+	traverseSim(&firstRoot);
+	printf("\nSecondRoot:\n");
+	traverseSim(&secondRoot);
+	printf("\nGeneralRoot:\n");
+	traverseSim(&firstRoot, &secondRoot);
+	traversePr(&firstRoot);
+
+	printf("\nObr:\n\n");
+	printf("FirstRoot:\n");
+	traverseObr(&firstRoot);
+	printf("\nSecondRoot:\n");
+	traverseObr(&secondRoot);
+	printf("\nGeneralRoot:\n");
 	combine(&firstRoot, &secondRoot);
-	traversePrev(&firstRoot);
+	traverseObr(&firstRoot);
+
+	printf("\nPr:\n\n");
+	printf("FirstRoot:\n");
+	traversePr(&firstRoot);
+	printf("\nSecondRoot:\n");
+	traversePr(&secondRoot);
+	printf("\nGeneralRoot:\n");
+	combine(&firstRoot, &secondRoot);
+	traversePr(&firstRoot);
 }
