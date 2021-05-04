@@ -14,61 +14,61 @@ int main(void)
         if (n <= 19) {
             switch (n) {
             case 1:
-                printf("îäèí");
+                printf("Ð¾Ð´Ð¸Ð½");
                 break;
             case 2:
-                printf("äâà");
+                printf("Ð´Ð²Ð°");
                 break;
             case 3:
-                printf("òðè");
+                printf("Ñ‚Ñ€Ð¸");
                 break;
             case 4:
-                printf("÷åòûðå");
+                printf("Ñ‡ÐµÑ‚Ñ‹Ñ€Ðµ");
                 break;
             case 5:
-                printf("ïÿòü");
+                printf("Ð¿ÑÑ‚ÑŒ");
                 break;
             case 6:
-                printf("øåñòü");
+                printf("ÑˆÐµÑÑ‚ÑŒ");
                 break;
             case 7:
-                printf("ñåìü");
+                printf("ÑÐµÐ¼ÑŒ");
                 break;
             case 8:
-                printf("âîñåìü");
+                printf("Ð²Ð¾ÑÐµÐ¼ÑŒ");
                 break;
             case 9:
-                printf("äåâÿòü");
+                printf("Ð´ÐµÐ²ÑÑ‚ÑŒ");
                 break;
             case 10:
-                printf("äåñÿòü");
+                printf("Ð´ÐµÑÑÑ‚ÑŒ");
                 break;
             case 11:
-                printf("îäèííàäöàòü");
+                printf("Ð¾Ð´Ð¸Ð½Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 12:
-                printf("äâåíàäöàòü");
+                printf("Ð´Ð²ÐµÐ½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 13:
-                printf("òðèíàäöàòü");
+                printf("Ñ‚Ñ€Ð¸Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 14:
-                printf("÷åòûðíàäöàòü");
+                printf("Ñ‡ÐµÑ‚Ñ‹Ñ€Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 15:
-                printf("ïÿòíàäöàòü");
+                printf("Ð¿ÑÑ‚Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 16:
-                printf("øåñòíàäöàòü");
+                printf("ÑˆÐµÑÑ‚Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 17:
-                printf("ñåìíàäöàòü");
+                printf("ÑÐµÐ¼Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 18:
-                printf("âîñåìíàäöàòü");
+                printf("Ð²Ð¾ÑÐµÐ¼Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 19:
-                printf("äåâÿòíàäöàòü");
+                printf("Ð´ÐµÐ²ÑÑ‚Ð½Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             default:
                 break;
@@ -77,28 +77,28 @@ int main(void)
         else {
             switch (n / 10) {
             case 2:
-                printf("äâàäöàòü");
+                printf("Ð´Ð²Ð°Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 3:
-                printf("òðèäöàòü");
+                printf("Ñ‚Ñ€Ð¸Ð´Ñ†Ð°Ñ‚ÑŒ");
                 break;
             case 4:
-                printf("ñîðîê");
+                printf("ÑÐ¾Ñ€Ð¾Ðº");
                 break;
             case 5:
-                printf("ïÿòüäåñÿò");
+                printf("Ð¿ÑÑ‚ÑŒÐ´ÐµÑÑÑ‚");
                 break;
             case 6:
-                printf("øåñòüäåñÿò");
+                printf("ÑˆÐµÑÑ‚ÑŒÐ´ÐµÑÑÑ‚");
                 break;
             case 7:
-                printf("ñåìüäåñÿò");
+                printf("ÑÐµÐ¼ÑŒÐ´ÐµÑÑÑ‚");
                 break;
             case 8:
-                printf("âîñåìüäåñÿò");
+                printf("Ð²Ð¾ÑÐµÐ¼ÑŒÐ´ÐµÑÑÑ‚");
                 break;
             case 9:
-                printf("äåâÿíîñòî");
+                printf("Ð´ÐµÐ²ÑÐ½Ð¾ÑÑ‚Ð¾");
                 break;
             default:
                 break;
@@ -108,31 +108,31 @@ int main(void)
             case 0:
                 break;
             case 1:
-                printf(" îäèí");
+                printf(" Ð¾Ð´Ð¸Ð½");
                 break;
             case 2:
-                printf(" äâà");
+                printf(" Ð´Ð²Ð°");
                 break;
             case 3:
-                printf(" òðè");
+                printf(" Ñ‚Ñ€Ð¸");
                 break;
             case 4:
-                printf(" ÷åòûðå");
+                printf(" Ñ‡ÐµÑ‚Ñ‹Ñ€Ðµ");
                 break;
             case 5:
-                printf(" ïÿòü");
+                printf(" Ð¿ÑÑ‚ÑŒ");
                 break;
             case 6:
-                printf(" øåñòü");
+                printf(" ÑˆÐµÑÑ‚ÑŒ");
                 break;
             case 7:
-                printf(" ñåìü");
+                printf(" ÑÐµÐ¼ÑŒ");
                 break;
             case 8:
-                printf(" âîñåìü");
+                printf(" Ð²Ð¾ÑÐµÐ¼ÑŒ");
                 break;
             case 9:
-                printf(" äåâÿòü");
+                printf(" Ð´ÐµÐ²ÑÑ‚ÑŒ");
                 break;
             default:
                 break;
