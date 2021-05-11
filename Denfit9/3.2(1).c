@@ -1,32 +1,33 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
-int main(){
-    int n=0;
-    int m = 0;
+int main() {
+	int n = 0;
+	int m = 0;
 	int zero = 0;
-	float correct = powf(10.0,-9.0);
-    printf("n=");
-    scanf_s("%d", &n);
-    printf("m=");
-    scanf_s("%d", &m);
-    float** A = (float**)malloc(n * sizeof(float*));
-    for (int i = 0; i < n; i++) {
-        A[i] = (float*)malloc(m * sizeof(float));
-    }
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            scanf_s("%f", &A[i][j]);
-        }
-    }
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            printf("%.0f ", A[i][j]);
-        }
-        printf("\n");
-    }
+	float correct = 0.00000001;
+	printf("n=");
+	scanf_s("%d", &n);
+	printf("m=");
+	scanf_s("%d", &m);
+	float** A = (float**)malloc(n * sizeof(float*));
+	for (int i = 0; i < n; i++) {
+		A[i] = (float*)malloc(m * sizeof(float));
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{   
+			printf("Enter element of matrix [%d][%d]  ",i+1,j+1);
+			scanf_s("%f", &A[i][j]);
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			printf("%.0f ", A[i][j]);
+		}
+		printf("\n");
+	}
 	int maxrows = -1;
 	float processedEl;
 	int rang = -1;
@@ -73,17 +74,17 @@ int main(){
 	}
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
-			if (A[i][j]==0) {
+			if (A[i][j] == 0) {
 				zero++;
 			}
 		}
 	}
-	if (zero == n*m) {
+	if (zero == n * m) {
 		rang = 0;
 	}
-	printf("Rang is %d",rang);
-    for (int i = 0; i < n; i++) {
-        free(A[i]);
-    }
-    free(A);
+	printf("Rang is %d", rang);
+	for (int i = 0; i < n; i++) {
+		free(A[i]);
+	}
+	free(A);
 }
