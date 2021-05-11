@@ -1,178 +1,134 @@
 #include<stdio.h>
 #include<string.h>
 #include<malloc.h>
-#include<math.h>
 #include<stdlib.h>
 
-typedef struct binNode
+typedef struct binTreeNode
 {
-	int num;
-	struct binNode* leftChild;
-	struct binNode* rightChild;
-	struct binNode* pNext;
-	struct binNode* pPrev;
-} BinNode;
+	int numb;
+	struct binTreeNode* leftChild;
+	struct binTreeNode* rightChild;
+	struct binTreeNode* pNext;
+	struct binTreeNode* pPrev;
+} BinTreeNode;
 
-BinNode* searchYzel(BinNode* currant, int i)
+// найти узел
+BinTreeNode* searchNode(BinTreeNode* currant, int i)
 {
-	if (currant->num == i)
-	{
+	if (currant->numb == i)
 		return currant;
-	}
 
-	if (currant->num > i)
+	if (currant->numb > i)
 	{
 		if (currant->leftChild)
-		{
-			return searchYzel(currant->leftChild, i);
-		}
+			return searchNode(currant->leftChild, i);
 		else
-		{
 			return NULL;
-		}
 	}
 
-	if (currant->num < i)
+	if (currant->numb < i)
 	{
 		if (currant->rightChild)
-		{
-			return searchYzel(currant->rightChild, i);
-		}
+			return searchNode(currant->rightChild, i);
 		else
-		{
 			return NULL;
-		}
 	}
 }
 
-BinNode* searchPrev(BinNode* currant, int i, BinNode* Prev)
+BinTreeNode* searchPrev(BinTreeNode* currant, BinTreeNode* prev, int i)
 {
-	if (currant->num == i)
-	{
-		return Prev;
-	}
+	if (currant->numb == i)
+		return prev;
 
-	if (currant->num > i)
+	if (currant->numb > i)
 	{
 		if (currant->leftChild)
-		{
-			return searchPrev(currant->leftChild, i, currant);
-		}
+			return searchPrev(currant->leftChild, currant, i);
 		else
-		{
 			return NULL;
-		}
 	}
 
-	if (currant->num < i)
+	if (currant->numb < i)
 	{
 		if (currant->rightChild)
-		{
-			return searchPrev(currant->rightChild, i, currant);
-		}
+			return searchPrev(currant->rightChild, currant, i);
 		else
-		{
 			return NULL;
-		}
 	}
 }
 
-BinNode* findMin(BinNode* currant)
+BinTreeNode* findMin(BinTreeNode* currant)
 {
 	if (currant->leftChild)
-	{
 		findMin(currant->leftChild);
-	}
 	else
-	{
 		return currant;
-	}
 }
 
-BinNode* findMax(BinNode* currant)
+BinTreeNode* findMax(BinTreeNode* currant)
 {
 	if (currant->rightChild)
-	{
 		findMax(currant->rightChild);
-	}
 	else
-	{
 		return currant;
-	}
 }
 
 // проверка на наличие двух узлов после конкретного элемента
-int defineNode(BinNode* p)
+int checkTwoNode(BinTreeNode* current)
 {
-	if (p->leftChild || p->rightChild)
-	{
+	if (current->leftChild || current->rightChild)
 		return 1;
-	}
 	else
-	{
 		return 0;
-	}
 }
 
-// удаление последнего узна
-void removeList(BinNode* currant, BinNode* pred)
+// удаление последнего узла
+void removeLastNode(BinTreeNode* currant, BinTreeNode* prev)
 {
-	if (pred->leftChild == currant)
-	{
-		pred->leftChild = NULL;
-	}
-	else if (pred->rightChild == currant)
-	{
-		pred->rightChild = NULL;
-	}
+	if (prev->leftChild == currant)
+		prev->leftChild = NULL;
+	else if (prev->rightChild == currant)
+		prev->rightChild = NULL;
 }
 
-void Remove(BinNode* root, int i)
+void Remove(BinTreeNode* root, int i)
 {
-	int def;
+	int check;
 
-	BinNode* currant;
-	BinNode* pred = root;
+	BinTreeNode* currant;
+	BinTreeNode* pred = root;
 
-	currant = searchYzel(root, i);
+	currant = searchNode(root, i);
 
 	if (currant != NULL && currant != root)
 	{
-		pred = searchPrev(root, i, pred);
-		def = defineNode(currant);
+		pred = searchPrev(root, pred, i);
+		check = checkTwoNode(currant);
 
-		BinNode* currantMaxElementInSubTree;
-		BinNode* predtMaxElementInSubTree;
+		BinTreeNode* currantMaxElementInSubTree;
+		BinTreeNode* predtMaxElementInSubTree;
 
-		if (def == 0)
+		if (check == 0)
 		{
-			removeList(currant, pred);
+			removeLastNode(currant, pred);
 			free(currant);
 		}
-		else if (def == 1)
+		else if (check == 1)
 		{
 			if (currant->leftChild != NULL)
-			{
 				currantMaxElementInSubTree = findMax(currant->leftChild);
-			}
 			else
-			{
 				currantMaxElementInSubTree = findMin(currant->rightChild);
-			}
 
 			predtMaxElementInSubTree = currantMaxElementInSubTree;
-			predtMaxElementInSubTree = searchPrev(root, currantMaxElementInSubTree->num, predtMaxElementInSubTree);
+			predtMaxElementInSubTree = searchPrev(root, predtMaxElementInSubTree, currantMaxElementInSubTree->numb);
 
 			if (currant != predtMaxElementInSubTree)
 			{
 				if (pred->leftChild == currant)
-				{
 					pred->leftChild = currantMaxElementInSubTree;
-				}
 				else if (pred->rightChild == currant)
-				{
 					pred->rightChild = currantMaxElementInSubTree;
-				}
 
 				if (currant->leftChild)
 				{
@@ -189,18 +145,12 @@ void Remove(BinNode* root, int i)
 			else
 			{
 				if (pred->leftChild == currant)
-				{
 					pred->leftChild = currantMaxElementInSubTree;
-				}
 				else if (pred->rightChild == currant)
-				{
 					pred->rightChild = currantMaxElementInSubTree;
-				}
 
 				if (currant->leftChild)
-				{
 					currantMaxElementInSubTree->rightChild = currant->rightChild;
-				}
 			}
 
 			free(currant);
@@ -208,170 +158,128 @@ void Remove(BinNode* root, int i)
 	}
 }
 
-void push(BinNode* currant, int num)
+void push(BinTreeNode* currant, int numb)
 {
-	BinNode* cheak = searchYzel(currant, num);
+	BinTreeNode* check = searchNode(currant, numb);
 
-	if (cheak == NULL)
+	if (check == NULL)
 	{
-		if (currant->num > num)
+		if (currant->numb > numb)
 		{
 			if (currant->leftChild)
-			{
-				push(currant->leftChild, num);
-			}
+				push(currant->leftChild, numb);
 			else
 			{
-				BinNode* p = (BinNode*)malloc(sizeof(BinNode));
+				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
-				p->num = num;
+				p->numb = numb;
 				currant->leftChild = p;
 			}
 		}
 		else
 		{
 			if (currant->rightChild)
-			{
-				push(currant->rightChild, num);
-			}
+				push(currant->rightChild, numb);
 			else
 			{
-				BinNode* p = (BinNode*)malloc(sizeof(BinNode));
+				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
-				p->num = num;
+				p->numb = numb;
 				currant->rightChild = p;
 			}
 		}
 	}
 }
 
-void combine(BinNode* firstRoot, BinNode* secondRoot)
+void combine(BinTreeNode* firstRoot, BinTreeNode* secondRoot)
 {
-	BinNode* buffer;
-
-	buffer = searchYzel(firstRoot, secondRoot->num);
+	BinTreeNode* buffer;
+	buffer = searchNode(firstRoot, secondRoot->numb);
 
 	if (buffer == NULL)
-	{
-		push(firstRoot, secondRoot->num);
-	}
+		push(firstRoot, secondRoot->numb);
 
 	if (secondRoot->leftChild)
-	{
 		combine(firstRoot, secondRoot->leftChild);
-	}
 
 	if (secondRoot->rightChild)
-	{
 		combine(firstRoot, secondRoot->rightChild);
-	}
 }
 
-// сим. обход
-void traverseSim(BinNode* currant)
+// сим обход
+void traverseSim(BinTreeNode* currant)
 {
 	if (currant->leftChild)
-	{
 		traverseSim(currant->leftChild);
-	}
 
-	printf("%d\n", currant->num);
+	printf("%d\n", currant->numb);
 
 	if (currant->rightChild)
-	{
 		traverseSim(currant->rightChild);
-	}
 }
 
 // прямой обход
-void traversePr(BinNode* currant)
+void traversePr(BinTreeNode* currant)
 {
-	printf("%d\n", currant->num);
+	printf("%d\n", currant->numb);
 
 	if (currant->leftChild)
-	{
 		traversePr(currant->leftChild);
-	}
 
 	if (currant->rightChild)
-	{
 		traversePr(currant->rightChild);
-	}
 }
 
 // обратный обход
-void traverseObr(BinNode* currant)
+void traverseObr(BinTreeNode* currant)
 {
 	if (currant->leftChild)
-	{
 		traverseObr(currant->leftChild);
-	}
 
 	if (currant->rightChild)
-	{
 		traverseObr(currant->rightChild);
-	}
 
-	printf("%d\n", currant->num);
+	printf("%d\n", currant->numb);
 }
 
 int main()
 {
-	BinNode firstRoot = { 100, NULL, NULL };
-	BinNode secondRoot = { 100, NULL, NULL };
+	BinTreeNode firstRoot = { 51, NULL, NULL };
+	BinTreeNode secondRoot = { 91, NULL, NULL };
 	
 	// firstRoot
-	push(&firstRoot, 35);
-	push(&firstRoot, 18);
-	push(&firstRoot, 43);
-	push(&firstRoot, 120);
-	push(&firstRoot, 90);
-	push(&firstRoot, 150);
-	push(&firstRoot, 39);
-	push(&firstRoot, 37);
-	push(&firstRoot, 36);
-	push(&firstRoot, 41);
-	push(&firstRoot, 40);
-	push(&firstRoot, 60);
-	push(&firstRoot, 59);
-	push(&firstRoot, 110);
-	push(&firstRoot, 20);
+	push(&firstRoot, 46);
+	push(&firstRoot, 29);
+	push(&firstRoot, 54);
+	push(&firstRoot, 131);
+	push(&firstRoot, 101);
+	push(&firstRoot, 161);
+	push(&firstRoot, 50);
+	push(&firstRoot, 48);
+	push(&firstRoot, 47);
+	push(&firstRoot, 52);
+	push(&firstRoot, 51);
+	push(&firstRoot, 71);
+	push(&firstRoot, 70);
+	push(&firstRoot, 121);
+	push(&firstRoot, 31);
 
 	// secondRoot
-	push(&secondRoot, 30);
-	push(&secondRoot, 18);
-	push(&secondRoot, 35);
-	push(&secondRoot, 66);
-	push(&secondRoot, 56);
-	push(&secondRoot, 60);
-	push(&secondRoot, 73);
+	push(&secondRoot, 41);
+	push(&secondRoot, 29);
+	push(&secondRoot, 46);
+	push(&secondRoot, 77);
 	push(&secondRoot, 67);
-	push(&secondRoot, 999);
+	push(&secondRoot, 71);
+	push(&secondRoot, 84);
+	push(&secondRoot, 78);
+	push(&secondRoot, 228);
 
-	printf("\nSim:\n\n");
-	printf("FirstRoot:\n");
-	traverseSim(&firstRoot);
-	printf("\nSecondRoot:\n");
-	traverseSim(&secondRoot);
-	printf("\nGeneralRoot:\n");
-	traverseSim(&firstRoot, &secondRoot);
-	traversePr(&firstRoot);
-
-	printf("\nObr:\n\n");
-	printf("FirstRoot:\n");
-	traverseObr(&firstRoot);
-	printf("\nSecondRoot:\n");
-	traverseObr(&secondRoot);
-	printf("\nGeneralRoot:\n");
-	combine(&firstRoot, &secondRoot);
-	traverseObr(&firstRoot);
-
-	printf("\nPr:\n\n");
-	printf("FirstRoot:\n");
+	printf("\n\nFirstRoot:\n");
 	traversePr(&firstRoot);
 	printf("\nSecondRoot:\n");
 	traversePr(&secondRoot);
