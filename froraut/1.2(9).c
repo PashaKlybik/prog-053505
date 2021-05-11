@@ -1,4 +1,4 @@
-//Боровой Илья 053505 Lab1 var 9
+//Lab1 var 9
 #include<stdio.h>
 
 void main() 
