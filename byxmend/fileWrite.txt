@@ -1,0 +1,6 @@
+1,100,Minsk,Warsaw,Brest,05:00,12.12
+2,200,Berlin,Vienna,Prague,10:15,10.05
+3,300,London,Moscow,Netherlands,15:30,27.12
+4,400,Paris,Munich,Luxembourg,20:45,05.06
+5,500,Paris,Munich,Luxembourg,01:00,05.07
+6,600,Paris,Munich,Luxembourg,06:15,03.06
