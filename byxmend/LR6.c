@@ -13,45 +13,45 @@ typedef struct binTreeNode
 } BinTreeNode;
 
 // найти узел
-BinTreeNode* searchNode(BinTreeNode* currant, int i)
+BinTreeNode* searchNode(BinTreeNode* currant, int number)
 {
-	if (currant->numb == i)
+	if (currant->numb == number)
 		return currant;
 
-	if (currant->numb > i)
+	if (currant->numb > number)
 	{
 		if (currant->leftChild)
-			return searchNode(currant->leftChild, i);
+			return searchNode(currant->leftChild, number);
 		else
 			return NULL;
 	}
 
-	if (currant->numb < i)
+	if (currant->numb < number)
 	{
 		if (currant->rightChild)
-			return searchNode(currant->rightChild, i);
+			return searchNode(currant->rightChild, number);
 		else
 			return NULL;
 	}
 }
 
-BinTreeNode* searchPrev(BinTreeNode* currant, BinTreeNode* prev, int i)
+BinTreeNode* searchPrev(BinTreeNode* currant, BinTreeNode* prev, int number)
 {
-	if (currant->numb == i)
+	if (currant->numb == number)
 		return prev;
 
-	if (currant->numb > i)
+	if (currant->numb > number)
 	{
 		if (currant->leftChild)
-			return searchPrev(currant->leftChild, currant, i);
+			return searchPrev(currant->leftChild, currant, number);
 		else
 			return NULL;
 	}
 
-	if (currant->numb < i)
+	if (currant->numb < number)
 	{
 		if (currant->rightChild)
-			return searchPrev(currant->rightChild, currant, i);
+			return searchPrev(currant->rightChild, currant, number);
 		else
 			return NULL;
 	}
@@ -91,18 +91,17 @@ void removeLastNode(BinTreeNode* currant, BinTreeNode* prev)
 		prev->rightChild = NULL;
 }
 
-void Remove(BinTreeNode* root, int i)
+void Remove(BinTreeNode* root, int number)
 {
-	int check;
-
 	BinTreeNode* currant;
 	BinTreeNode* pred = root;
 
-	currant = searchNode(root, i);
+	int check;
+	currant = searchNode(root, number);
 
 	if (currant != NULL && currant != root)
 	{
-		pred = searchPrev(root, pred, i);
+		pred = searchPrev(root, pred, number);
 		check = checkTwoNode(currant);
 
 		BinTreeNode* currantMaxElementInSubTree;
@@ -158,37 +157,37 @@ void Remove(BinTreeNode* root, int i)
 	}
 }
 
-void push(BinTreeNode* currant, int numb)
+void push(BinTreeNode* currant, int number)
 {
-	BinTreeNode* check = searchNode(currant, numb);
+	BinTreeNode* check = searchNode(currant, number);
 
 	if (check == NULL)
 	{
-		if (currant->numb > numb)
+		if (currant->numb > number)
 		{
 			if (currant->leftChild)
-				push(currant->leftChild, numb);
+				push(currant->leftChild, number);
 			else
 			{
 				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
-				p->numb = numb;
+				p->numb = number;
 				currant->leftChild = p;
 			}
 		}
 		else
 		{
 			if (currant->rightChild)
-				push(currant->rightChild, numb);
+				push(currant->rightChild, number);
 			else
 			{
 				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
-				p->numb = numb;
+				p->numb = number;
 				currant->rightChild = p;
 			}
 		}
@@ -248,36 +247,26 @@ void traverseObr(BinTreeNode* currant)
 
 int main()
 {
-	BinTreeNode firstRoot = { 51, NULL, NULL };
-	BinTreeNode secondRoot = { 91, NULL, NULL };
+	BinTreeNode firstRoot = { 6, NULL, NULL };
+	BinTreeNode secondRoot = { 6, NULL, NULL };
 	
 	// firstRoot
-	push(&firstRoot, 46);
-	push(&firstRoot, 29);
-	push(&firstRoot, 54);
-	push(&firstRoot, 131);
-	push(&firstRoot, 101);
-	push(&firstRoot, 161);
-	push(&firstRoot, 50);
-	push(&firstRoot, 48);
-	push(&firstRoot, 47);
-	push(&firstRoot, 52);
-	push(&firstRoot, 51);
-	push(&firstRoot, 71);
-	push(&firstRoot, 70);
-	push(&firstRoot, 121);
-	push(&firstRoot, 31);
+	push(&firstRoot, 3);
+	push(&firstRoot, 1);
+	push(&firstRoot, 4);
+	push(&firstRoot, 5);
+	push(&firstRoot, 8);
+	push(&firstRoot, 7);
+	push(&firstRoot, 13);
+	push(&firstRoot, 15);
 
 	// secondRoot
-	push(&secondRoot, 41);
-	push(&secondRoot, 29);
-	push(&secondRoot, 46);
-	push(&secondRoot, 77);
-	push(&secondRoot, 67);
-	push(&secondRoot, 71);
-	push(&secondRoot, 84);
-	push(&secondRoot, 78);
-	push(&secondRoot, 228);
+	push(&secondRoot, 2);
+	push(&secondRoot, 0);
+	push(&secondRoot, 5);
+	push(&secondRoot, 8);
+	push(&secondRoot, 7);
+	push(&secondRoot, 16);
 
 	printf("\n\nFirstRoot:\n");
 	traversePr(&firstRoot);
