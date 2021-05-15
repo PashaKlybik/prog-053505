@@ -386,7 +386,7 @@ void handOverATicket(InformationAboutSchedule* schedules, InformationAboutSchedu
         if (selectedNumber == (index - 1))
         {
             p->numberOfTickets--;
-            printf("\nTicket passed successfull!");
+            printf("\nTicket passed successful!");
             break;
         }
 
@@ -410,6 +410,25 @@ void menu()
     printf("11 - Number of available seats\n");
     printf("12 - Print ticket\n");
     printf("Other - Save in data to the file and exit\n");
+}
+
+void freeList(InformationAboutSchedule* schedules)
+{
+    Node* current = schedules->head;
+
+    while (current)
+    {
+        Node* tmp = current;
+        current = current->pNext;
+        free(tmp->flightNumber);
+        free(tmp->typeOfPlane);
+        free(tmp->startLocation);
+        free(tmp->finishLocation);
+        free(tmp->place);
+        free(tmp->time);
+        free(tmp->date);
+        free(tmp);
+    }
 }
 
 int main()
@@ -625,6 +644,9 @@ int main()
 
                 fileWriteOperation = fileWriteOperation->pNext;
             }
+
+            // clear memory
+            freeList(&schedules);
 
             fclose(filePrint);
             fclose(fileWrite);
