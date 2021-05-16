@@ -244,7 +244,6 @@ void traverseObr(Tree* currant)
 	printf("%d\n", currant->numb);
 }
 
-/*
 void freeMemory(Tree* currant)
 {
 	if (currant)
@@ -258,7 +257,6 @@ void freeMemory(Tree* currant)
 		free(currant);
 	}
 }
-*/
 
 int main()
 {	
@@ -291,6 +289,11 @@ int main()
 	traversePr(&firstRoot);
 
 	// clear memory
+	// method 1
+	freeMemory(&firstRoot);
+	freeMemory(&secondRoot);
+
+	// or method 2
 	for (int i = 0; i <= 13; i++)
 	{
 		if (searchNode(&firstRoot, i))
@@ -302,4 +305,6 @@ int main()
 		if (searchNode(&secondRoot, i))
 			Remove(&secondRoot, i);
 	}
+
+	// method 2 exactly works
 }
