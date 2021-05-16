@@ -3,17 +3,17 @@
 #include<malloc.h>
 #include<stdlib.h>
 
-typedef struct binTreeNode
+typedef struct tree
 {
 	int numb;
-	struct binTreeNode* leftChild;
-	struct binTreeNode* rightChild;
-	struct binTreeNode* pNext;
-	struct binTreeNode* pPrev;
-} BinTreeNode;
+	struct tree* leftChild;
+	struct tree* rightChild;
+	struct tree* pNext;
+	struct tree* pPrev;
+} Tree;
 
 // найти узел
-BinTreeNode* searchNode(BinTreeNode* currant, int number)
+Tree* searchNode(Tree* currant, int number)
 {
 	if (currant->numb == number)
 		return currant;
@@ -35,7 +35,7 @@ BinTreeNode* searchNode(BinTreeNode* currant, int number)
 	}
 }
 
-BinTreeNode* searchPrev(BinTreeNode* currant, BinTreeNode* prev, int number)
+Tree* searchPrev(Tree* currant, Tree* prev, int number)
 {
 	if (currant->numb == number)
 		return prev;
@@ -57,24 +57,23 @@ BinTreeNode* searchPrev(BinTreeNode* currant, BinTreeNode* prev, int number)
 	}
 }
 
-BinTreeNode* findMin(BinTreeNode* currant)
+Tree* findMin(Tree* currant)
 {
-	if (currant->leftChild)
+	if (currant->leftChild != NULL)
 		findMin(currant->leftChild);
 	else
 		return currant;
 }
 
-BinTreeNode* findMax(BinTreeNode* currant)
+Tree* findMax(Tree* currant)
 {
-	if (currant->rightChild)
+	if (currant->rightChild != NULL)
 		findMax(currant->rightChild);
 	else
 		return currant;
 }
 
-// проверка на наличие двух узлов после конкретного элемента
-int checkTwoNode(BinTreeNode* current)
+int checkTwoNode(Tree* current)
 {
 	if (current->leftChild || current->rightChild)
 		return 1;
@@ -82,9 +81,84 @@ int checkTwoNode(BinTreeNode* current)
 		return 0;
 }
 
-void push(BinTreeNode* currant, int number)
+// удаление последнего узла
+void removeLastNode(Tree* currant, Tree* prev)
 {
-	BinTreeNode* check = searchNode(currant, number);
+	if (prev->leftChild == currant)
+		prev->leftChild = NULL;
+	else if (prev->rightChild == currant)
+		prev->rightChild = NULL;
+}
+
+void Remove(Tree* root, int number)
+{
+	Tree* currant;
+	Tree* prev = root;
+
+	int check;
+	currant = searchNode(root, number);
+
+	if (currant != NULL && currant != root)
+	{
+		prev = searchPrev(root, prev, number);
+		check = checkTwoNode(currant);
+
+		Tree* currantMaxElementInSubTree;
+		Tree* predtMaxElementInSubTree;
+
+		if (check == 0)
+		{
+			removeLastNode(currant, prev);
+			free(currant);
+		}
+		else if (check == 1)
+		{
+			if (currant->leftChild != NULL)
+				currantMaxElementInSubTree = findMax(currant->leftChild);
+			else
+				currantMaxElementInSubTree = findMin(currant->rightChild);
+
+			predtMaxElementInSubTree = currantMaxElementInSubTree;
+			predtMaxElementInSubTree = searchPrev(root, predtMaxElementInSubTree, currantMaxElementInSubTree->numb);
+
+			if (currant != predtMaxElementInSubTree)
+			{
+				if (prev->leftChild == currant)
+					prev->leftChild = currantMaxElementInSubTree;
+				else if (prev->rightChild == currant)
+					prev->rightChild = currantMaxElementInSubTree;
+
+				if (currant->leftChild)
+				{
+					predtMaxElementInSubTree->rightChild = currantMaxElementInSubTree->leftChild;
+					currantMaxElementInSubTree->leftChild = currant->leftChild;
+					currantMaxElementInSubTree->rightChild = currant->rightChild;
+				}
+				else
+				{
+					currantMaxElementInSubTree->rightChild = currant->rightChild;
+					predtMaxElementInSubTree->leftChild = NULL;
+				}
+			}
+			else
+			{
+				if (prev->leftChild == currant)
+					prev->leftChild = currantMaxElementInSubTree;
+				else if (prev->rightChild == currant)
+					prev->rightChild = currantMaxElementInSubTree;
+
+				if (currant->leftChild)
+					currantMaxElementInSubTree->rightChild = currant->rightChild;
+			}
+
+			free(currant);
+		}
+	}
+}
+
+void push(Tree* currant, int number)
+{
+	Tree* check = searchNode(currant, number);
 
 	if (check == NULL)
 	{
@@ -94,7 +168,7 @@ void push(BinTreeNode* currant, int number)
 				push(currant->leftChild, number);
 			else
 			{
-				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+				Tree* p = (Tree*)malloc(sizeof(Tree));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
@@ -108,7 +182,7 @@ void push(BinTreeNode* currant, int number)
 				push(currant->rightChild, number);
 			else
 			{
-				BinTreeNode* p = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+				Tree* p = (Tree*)malloc(sizeof(Tree));
 
 				p->leftChild = NULL;
 				p->rightChild = NULL;
@@ -119,9 +193,9 @@ void push(BinTreeNode* currant, int number)
 	}
 }
 
-void combine(BinTreeNode* firstRoot, BinTreeNode* secondRoot)
+void combine(Tree* firstRoot, Tree* secondRoot)
 {
-	BinTreeNode* buffer;
+	Tree* buffer;
 	buffer = searchNode(firstRoot, secondRoot->numb);
 
 	if (buffer == NULL)
@@ -135,7 +209,7 @@ void combine(BinTreeNode* firstRoot, BinTreeNode* secondRoot)
 }
 
 // сим обход
-void traverseSim(BinTreeNode* currant)
+void traverseSim(Tree* currant)
 {
 	if (currant->leftChild)
 		traverseSim(currant->leftChild);
@@ -147,7 +221,7 @@ void traverseSim(BinTreeNode* currant)
 }
 
 // прямой обход
-void traversePr(BinTreeNode* currant)
+void traversePr(Tree* currant)
 {
 	printf("%d\n", currant->numb);
 
@@ -159,7 +233,7 @@ void traversePr(BinTreeNode* currant)
 }
 
 // обратный обход
-void traverseObr(BinTreeNode* currant)
+void traverseObr(Tree* currant)
 {
 	if (currant->leftChild)
 		traverseObr(currant->leftChild);
@@ -170,12 +244,26 @@ void traverseObr(BinTreeNode* currant)
 	printf("%d\n", currant->numb);
 }
 
-int main()
+/*
+void freeMemory(Tree* currant)
 {
-	BinTreeNode firstRoot = { 6, NULL, NULL };
-	BinTreeNode secondRoot = { 6, NULL, NULL };
-	
+	if (currant)
+	{
+		if (currant->leftChild)
+			freeMemory(currant->leftChild);
+
+		if (currant->rightChild != NULL)
+			freeMemory(currant->rightChild);
+
+		free(currant);
+	}
+}
+*/
+
+int main()
+{	
 	// firstRoot
+	Tree firstRoot = { 6, NULL, NULL };
 	push(&firstRoot, 3);
 	push(&firstRoot, 1);
 	push(&firstRoot, 4);
@@ -183,15 +271,16 @@ int main()
 	push(&firstRoot, 8);
 	push(&firstRoot, 7);
 	push(&firstRoot, 13);
-	push(&firstRoot, 15);
 
 	// secondRoot
+	Tree secondRoot = { 6, NULL, NULL };
 	push(&secondRoot, 2);
 	push(&secondRoot, 0);
 	push(&secondRoot, 5);
 	push(&secondRoot, 8);
 	push(&secondRoot, 7);
 	push(&secondRoot, 16);
+
 
 	printf("\n\nFirstRoot:\n");
 	traversePr(&firstRoot);
@@ -200,4 +289,17 @@ int main()
 	printf("\nGeneralRoot:\n");
 	combine(&firstRoot, &secondRoot);
 	traversePr(&firstRoot);
+
+	// clear memory
+	for (int i = 0; i <= 13; i++)
+	{
+		if (searchNode(&firstRoot, i))
+			Remove(&firstRoot, i);
+	}
+
+	for (int i = 0; i <= 16; i++)
+	{
+		if (searchNode(&secondRoot, i))
+			Remove(&secondRoot, i);
+	}
 }
