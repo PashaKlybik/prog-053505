@@ -60,15 +60,6 @@ int main() {
 			}
 		}
 
-		for (int k = i + 1; k < n; k++)
-		{
-			processedEl = -A[k][j] / A[i][j];
-			A[k][j] = 0.0;
-			for (maxrows = j + 1; maxrows < m; maxrows++)
-			{
-				A[k][maxrows] += processedEl * A[i][maxrows];
-			}
-		}
 		i++; j++;
 		rang = i;
 	}
