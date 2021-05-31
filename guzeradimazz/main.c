@@ -1,112 +1,151 @@
 //
 //  main.c
-//  5.1.9
+//  5.2.3
 //
-//  Created by Дима Гузерчук on 22.04.21.
-//
+//  Created by Дима Гузерчук on 28.04.21.
 //
 
 #include <stdio.h>
 #include <stdlib.h>
-#define STACK_SIZE 255
+#include "string.h"
+#include "time.h"
 
+/**
+ * Дан стек, элементы которого содержат номер обрабатываемого дерева i ( i ≤ n ) и копируемые в дерево данные (целое число d).
+ * Сформировать на основе стека n бинарных деревьев поиска. Подсчитать и вывести на печать сумму значений в каждом дереве.
+ */
+struct listItem {
+   struct listItem *next;
+   struct listItem *prev;
+   int d;
+};
 
-void checkPtr(void *ptr) {
-    if (ptr == NULL) {
-        printf("Failed to allocate memory!!!Program stopped.\n");
-        exit(-1);
+struct treeItem {
+   struct treeItem *left;
+   struct treeItem *right;
+   int d;
+};
+
+int input() {
+    char ch[3] = {0};
+    scanf("%[^\n]s", ch);
+    getchar();
+    if (ch[2] != 0 || !(ch[0] >= '1' && ch[0] <= '9') ||
+       (!(ch[1] >= '0' && ch[1] <= '9') && ch[1] != 0)) {
+        printf("Invalid input...\n");
+        exit(0);
     }
+    return atoi(ch);
 }
 
-void copy_from_buffer(char **buffer, char **str, int *const length, int *const n){
-    *str = (char *)realloc(*str, (*n + *length + 1) * sizeof(char));
-    checkPtr(str);
+void listInitialization(struct listItem **list, int n) {
     int i;
-    for (i = 0; i < *length; i++) {
-        (*str)[(*n)++] = (*buffer)[i];
+    for (i = 0; i < n; i++) {
+        int valuesNumber, j;
+        valuesNumber = rand() % 15 + 1;
+        for (j = 0; j < valuesNumber; j++) {
+            struct listItem *head = (struct listItem*)calloc(n, sizeof(struct listItem));
+            if (list[i]) {
+                (list[i])->prev = head;
+            }
+            head->next = list[i];
+            head->prev = NULL;
+            head->d = rand() % 50 + 1;
+            list[i] = head;
+        }
     }
-    *length = 0;
-    return;
 }
 
-int read_str(char **str){
-    char h;
-    int length = 0, n = 0;
-    char *buffer = (char *)malloc(STACK_SIZE * sizeof(char));
-    checkPtr(buffer);
-
-    while ((h = getchar()) != '\n') {
-        if (!((h >= 'A' && h <= 'Z') || (h >= 'a' && h <= 'z')))
-            continue;
-
-        buffer[length++] = h;
-
-        if (length == STACK_SIZE)
-            copy_from_buffer(&buffer, str, &length, &n);
+int listPop(struct listItem **list) {
+    int value;
+    if(!list) {
+        return -1;
     }
-    if (length != 0)
-        copy_from_buffer(&buffer, str, &length, &n);
-    (*str)[n] = '\0';
-    free(buffer);
-    return n;
+    else {
+        struct listItem *temp = *list;
+        value = (*list)->d;
+        *list = (*list)->next;
+        free(temp);
+        if (*list) {
+            (*list)->prev = NULL;
+        }
+    }
+    return value;
 }
 
+void addTree(struct treeItem **tree, int d) {
+    if (*tree == NULL) {
+      *tree = (struct treeItem *)calloc(1, sizeof(struct treeItem));
+      (*tree)->d = d;
+      (*tree)->left = (*tree)->right = NULL;
+    } else if (d < (*tree)->d) {
+        addTree(&(*tree)->left, d);
+    } else if (d > (*tree)->d) {
+        addTree(&(*tree)->right, d);
+    }
+}
 
-typedef struct stack {
-    struct stack *l, *r;
-    char symb;
-} Stack;
+void outputTree(struct treeItem *root) {
+    if (!root) {
+        return;
+    }/*
+    if (root->d) {
+        printf("%d", root->d);
+    }*/
+    outputTree(root->left);
+    printf("%d ", root->d);
+    outputTree(root->right);
+}
 
+int sumTree(struct treeItem *root) {
+    int l = 0, r = 0;
+    if (!root) return 0;
+    if(root->left) {
+        l = sumTree(root->left);
+    }
+    if(root->right) {
+        r = sumTree(root->right);
+    }
+    return l + r + root->d;
+}
 
-int main() {
-    int cycle = 1;
-    while (cycle) {
-        cycle = 0;
-        int i;
-        printf("Enter your word to test on 'Palindrome'\n>");
+void deleteTree(struct treeItem *root) {
+    if (!root) return;
+    deleteTree(root->left);
+    deleteTree(root->right);
+    free(root);
+}
 
-        char *str = NULL;
-        int n = read_str(&str);
-
-        short ans = 1;
-        Stack *ptr = (Stack *)malloc(sizeof(Stack));
-        checkPtr(ptr);
-        ptr->l = NULL;
-        ptr->r = NULL;
-        ptr->symb = str[0];
-        for (i = 1; i < n / 2; i++) {
-            
-            ptr->r = (Stack *)malloc(sizeof(Stack));
-            checkPtr(ptr->r);
-            
-            ptr->r->l = ptr;
-            ptr->r->r = NULL;
-            ptr->r->symb = str[i];
-            ptr = ptr->r;
+int main(void) {
+    int n, i;
+    struct listItem **list;
+    struct treeItem **trees;
+    printf("Введите колличество деревьев:\n> ");
+    n = input();
+    list = (struct listItem**)calloc(n, sizeof(struct listItem*));
+    trees = (struct treeItem**)calloc(n, sizeof(struct treeItem*));
+    //random items
+    srand((int)time(0));
+    listInitialization(list, n);
+    //fill tree's components
+    for (i = 0; i < n; i++) {
+        while(list[i]) {
+            addTree(&trees[i], listPop(&list[i]));
         }
-        int m = n / 2;
-        if (n % 2 == 1)
-            m++;
-            
-        for (i = m; i < n; i++) {
-            if (ptr->symb != str[i])
-                ans = 0;
-            if (ptr->l == NULL)
-                free(ptr);
-                else {
-                    ptr = ptr->l;
-                    free(ptr->r);
-                }
-        }
-
-        if (ans == 1)
-            printf("====The string is a palindrome====\n");
-        else
-            printf("====The string isn't a palindrome====\n");
-
-        free(str);
-        cycle = 1;
+    }
+    //print
+    for (i = 0; i < n; i++) {
+        printf("Дерево под номером #%d: ", i);
+        outputTree(trees[i]);
+        printf("Сумма: %d\n", sumTree(trees[i]));
     }
     
+    
+    free(list);
+    for (i = 0; i < n; i++) {
+        deleteTree(trees[i]);
+    }
+    free(trees);
+    printf("\n");
     return 0;
 }
