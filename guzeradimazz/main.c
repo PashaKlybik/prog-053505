@@ -18,12 +18,12 @@ void checkPtr(void *ptr) {
     }
 }
 
-void copy_from_buffer(char **buffer, char ***str, int *const length, int *const n){
-    **str = (char *)realloc(**str, (*n + *length + 1) * sizeof(char));
+void copy_from_buffer(char **buffer, char **str, int *const length, int *const n){
+    *str = (char *)realloc(*str, (*n + *length + 1) * sizeof(char));
     checkPtr(str);
     int i;
     for (i = 0; i < *length; i++) {
-        (**str)[(*n)++] = (*buffer)[i];
+        (*str)[(*n)++] = (*buffer)[i];
     }
     *length = 0;
     return;
@@ -36,19 +36,16 @@ int read_str(char **str){
     checkPtr(buffer);
 
     while ((h = getchar()) != '\n') {
-        if (!((h >= 'A' && h <= 'Z') || (h >= 'a' && h <= 'z'))) {
+        if (!((h >= 'A' && h <= 'Z') || (h >= 'a' && h <= 'z')))
             continue;
-        }
 
         buffer[length++] = h;
 
-        if (length == STACK_SIZE) {
-            copy_from_buffer(&buffer, &str, &length, &n);
-        }
+        if (length == STACK_SIZE)
+            copy_from_buffer(&buffer, str, &length, &n);
     }
-    if (length != 0) {
-        copy_from_buffer(&buffer, &str, &length, &n);
-    }
+    if (length != 0)
+        copy_from_buffer(&buffer, str, &length, &n);
     (*str)[n] = '\0';
     free(buffer);
     return n;
@@ -62,53 +59,54 @@ typedef struct stack {
 
 
 int main() {
-    int i;
-    printf("Enter your word to test on 'Palindrome'\n>");
+    int cycle = 1;
+    while (cycle) {
+        cycle = 0;
+        int i;
+        printf("Enter your word to test on 'Palindrome'\n>");
 
-    char *str = NULL;
-    int n = read_str(&str);
+        char *str = NULL;
+        int n = read_str(&str);
 
-    short ans = 1;
-    Stack *ptr = (Stack *)malloc(sizeof(Stack));
-    checkPtr(ptr);
-    ptr->l = NULL;
-    ptr->r = NULL;
-    ptr->symb = str[0];
-    for (i = 1; i < n / 2; i++) {
-        
-        ptr->r = (Stack *)malloc(sizeof(Stack));
-        checkPtr(ptr->r);
-        
-        ptr->r->l = ptr;
-        ptr->r->r = NULL;
-        ptr->r->symb = str[i];
-        ptr = ptr->r;
-    }
-    int m = n / 2;
-    if (n % 2 == 1) {
-        m++;
-    }
-
-    for (i = m; i < n; i++) {
-        if (ptr->symb != str[i]) {
-            ans = 0;
+        short ans = 1;
+        Stack *ptr = (Stack *)malloc(sizeof(Stack));
+        checkPtr(ptr);
+        ptr->l = NULL;
+        ptr->r = NULL;
+        ptr->symb = str[0];
+        for (i = 1; i < n / 2; i++) {
+            
+            ptr->r = (Stack *)malloc(sizeof(Stack));
+            checkPtr(ptr->r);
+            
+            ptr->r->l = ptr;
+            ptr->r->r = NULL;
+            ptr->r->symb = str[i];
+            ptr = ptr->r;
+        }
+        int m = n / 2;
+        if (n % 2 == 1)
+            m++;
+            
+        for (i = m; i < n; i++) {
+            if (ptr->symb != str[i])
+                ans = 0;
+            if (ptr->l == NULL)
+                free(ptr);
+                else {
+                    ptr = ptr->l;
+                    free(ptr->r);
+                }
         }
 
-        if (ptr->l == NULL) {
-            free(ptr);
-        } else {
-            ptr = ptr->l;
-            free(ptr->r);
-        }
+        if (ans == 1)
+            printf("====The string is a palindrome====\n");
+        else
+            printf("====The string isn't a palindrome====\n");
+
+        free(str);
+        cycle = 1;
     }
-
-    if (ans == 1) {
-        printf("The string is a palindrome.\n");
-    } else {
-        printf("The string isn't a palindrome.\n");
-    }
-
-    free(str);
-
+    
     return 0;
 }
