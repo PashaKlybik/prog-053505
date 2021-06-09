@@ -1,0 +1,22 @@
+#include <stdlib.h>
+#include<stdio.h>
+#include<malloc.h>
+#include<string.h>
+#include<Windows.h>
+
+struct Manager
+{
+	char* language;
+	char* subjects;
+	char* code;
+	char* article;
+	char* comment;
+	int  dateAdded;
+};
+
+struct Node
+{
+	Manager* manager;
+	Node* next;
+	Node* prev;
+};
