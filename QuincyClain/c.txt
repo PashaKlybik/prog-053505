@@ -1,0 +1,35 @@
+Code:
+using namespace std;
+int input (int *arr, int size)
+{
+        for (int i=0;i<size;i++ )
+        {
+                cout<<"Enter number №"<<i+1<<"-> ";
+                cin>>arr[i];
+                cout<<endl;
+        }
+        return *arr;
+}
+void out1 (int *arr, int n)
+{
+   for (int i=n-1; i>=0; i--)
+        {
+                cout<<arr[i]<<endl;
+        }      
+}
+int main()
+{
+        cout << "Enter array size: " << endl;
+        int n = 0;
+        cin >> n;
+        int *mas = new int[n];
+        input(mas,n);
+        out1(mas,n);
+    system("pause");
+    return 0;
+}
+/
+Title:
+1. c++;
+2. input and output array;
+3. 20.05.2021;
