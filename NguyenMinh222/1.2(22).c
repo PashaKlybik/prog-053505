@@ -12,13 +12,8 @@ int main()
 	scanf_s("%ld", &m);
 	for (int j = m; j > 0; j--)
 	{
-		mi = 0;
-		for (int i = 0, s = j; s > 0; i++)
-		{
-			mi += (s % 2) * pow(10.0, i);
-			s /= 2;
-		}
-		_ltoa(mi, chislo, 10);//ïåðåðîáðàçîâûâàåì â ÷àðîâñêóþ ïåðåìåííóþ
+		mi = j;
+		_ltoa(mi, chislo, 2);//Ã¯Ã¥Ã°Ã¥Ã°Ã®Ã¡Ã°Ã Ã§Ã®Ã¢Ã»Ã¢Ã Ã¥Ã¬ Ã¢ Ã·Ã Ã°Ã®Ã¢Ã±ÃªÃ³Ã¾ Ã¯Ã¥Ã°Ã¥Ã¬Ã¥Ã­Ã­Ã³Ã¾
 		int lenght = 0;
 		_Bool fail = 0;
 		char M[1];
@@ -43,6 +38,14 @@ int main()
 		}
 		if (!fail)
 		{
+			 mi = 0;
+			for (int i = 0, s = j; s > 0; i++)
+		{
+				
+			mi += (s % 2) * pow(10.0, i);
+			s /= 2;
+
+		}
 			printf("%lld - %d \n", mi, j);
 		}
 
