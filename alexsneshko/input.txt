@@ -1,10 +1,7 @@
-Zhibul Kirill Denisovich
-Lepeshko Roman Olegovich
-Vertinsky Konstantin Anatolievich
-Golovacheva Maria Igorevna
-Pesotsky Vladislav Arturovich
-Kharlap Nikita Olegovich
-Snetko Aliaxey Nikolaevich
-Tsareva Angelina Alexandrovna
-Dudich Timofei Sergeevich
-Ermolovich Dmitry Sergeevich
+0;Ermolovich Dima;male;25.05.2002;180;68;Minsk;football;No;I study at BSUIR and i`m clever;tall;
+1;Sneshko Alex;male;05.03.2003;181;72;Minsk;Anime;Yes;I study at BSUIR and i`m tall;strong;
+2;Tunika Marina;female;01.02.2003;170;50;Minsk;voleyball;No;I study at BSUIR and i`m beautiful;clever;
+3;Duduch Tima;male;14.04.2003;184;84;Brest;basketball;No;I study at BSUIR and i`m clever and tall;beautiful;
+4;Tsareva Angelina;female;01.02.2003;170;50;Minsk;voleyball;No;I study at BSUIR and i`m beautiful;clever;
+5;Pushka Stas;male;04.04.2003;190;84;Minsk;basketball;Yes;I study at BSUIR and i`m clever and beatiful;clever;
+6;Pulka Shpulka;female;01.02.2003;170;50;Minsk;voleyball;No;I study at BSUIR and i`m beautiful and tall;tall;
