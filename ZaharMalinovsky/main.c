@@ -1,345 +1,192 @@
-
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdlib.h>
 #include <stdio.h>
-#include <conio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 
-/*----------------------------Tree----------------------------*/
+#define STACK_OVERFLOW  -100
+#define STACK_UNDERFLOW -101
 
-struct TreeNode {
-    char txt[256];
-    struct TreeNode* left;
-    struct TreeNode* right;
+int SUM = 0;
+
+typedef struct Node{
+    int key;
+    int symbol;
+    struct Node* right_child;
+    struct Node* left_child;
 };
 
-void createNode(struct TreeNode** root, char *msg);
 
-int addItem(struct TreeNode** root, char *msg);
+struct Node* newNode(int x, int value);
 
-void printInorder(struct TreeNode* root);
+struct Node* insert(struct Node* root, int x, int value);
 
-void printPreorder(struct TreeNode* root);
+void printInorder(struct Node* root);
 
-void printPostorder(struct TreeNode* root);
+int sum();
 
-int deleteItem(struct TreeNode** root, char *msg);
+typedef struct Node_tag {
+    struct Node* root;
+    struct Node_tag* next;
+    int value;
+} Node_t;
 
-int find(struct TreeNode* root, char msg[256]);
+void push(Node_t** head, struct Node* root1);
 
-/*----------------------------Tree----------------------------*/
+pop(Node_t** head);
 
-/*----------------------------Stack----------------------------*/
+size_t getSize(const Node_t* head);
 
-struct StackNode {
-    char txt[256];
-    struct StackNode* next;
-    struct StackNode* prev;
-};
-
-void push(struct StackNode** stack_head, char msg[256]);
-
-void pop(struct StackNode** stack_head);
-
-void buildStack(struct StackNode** stack, struct TreeNode* root);
-
-void workWithStack(struct StackNode** stack_head);
-
-/*----------------------------Stack----------------------------*/
-
-
-int main(void)
+int main()
 {
-    struct TreeNode* treeRoot = NULL;
-    struct StackNode* stackHead = NULL;
+    srand(time(NULL));
 
-    puts("Welcome to the menu! Choose an operation number to proceed:\n");
-    while (1)
+    char exit;
+
+    while (true)
     {
-        puts("1. Add node to tree\n2. Print tree inorder");
-        puts("3. Print tree preorder\n4. Print tree postorder");
-        puts("5. Delete item in the tree\n6. Find item in the tree");
-        puts("7. Rebuild tree to stack (opens sub-menu)");
-        while (1)
+        int count = 0;
+        printf("Enter the amount of trees:");
+        scanf("%d", &count);
+        struct Node** roots = (struct Node**)calloc(count, sizeof(struct Node*));
+        int symbol;
+        int key;
+
+        for (int i = 0; i < count; i++)
         {
-            char choice = _getch();
-            while (getchar() != '\n');
-            if (choice >= '2' && choice <= '4')
-            {
-                switch (choice)
-                {
-                    case '2':
-                        printInorder(treeRoot);
-                        break;
-                    case '3':
-                        printPreorder(treeRoot);
-                        break;
-                    case '4':
-                        printPostorder(treeRoot);
-                        break;
-                }
-            }
-            else if (choice == '1') {
-                puts("Enter a text to insert in the tree (up to 256 characters):");
-                char txt[256];
-                gets(txt);
-                if (addItem(&treeRoot, txt)) {
-                    puts("Added successfully!");
-                }
-                else {
-                    puts("Such item already exist");
-                }
-            }
-            else if (choice >= '5' && choice <= '6')
-            {
-                char txt[256];
-                switch (choice)
-                {
-                    case '5':
-                        puts("Enter the text to delete node with:");
-                        gets(txt);
-                        if (deleteItem(&treeRoot, txt)) {
-                            puts("Successfully deleted item!");
-                        }
-                        else {
-                            puts("No such item found!");
-                        }
-                        break;
-                    case '6':
-                        puts("Enter the text to find node with:");
-                        gets(txt);
-                        if (find(treeRoot, &txt)) {
-                            puts("Such item exists in the tree!");
-                        }
-                        else {
-                            puts("No such item found!");
-                        }
-                        break;
-                }
-            }
-            if (choice >= '1' && choice <= '6')
-            {
-                puts("Press any key to proceed...");
-                _getch();
-                while (getchar() != '\n');
-                break;
-            }
-            if (choice == '7')
-            {
-                buildStack(&stackHead, treeRoot);
-                workWithStack(&stackHead);
-                return 0;
-            }
-        }
-    }
-}
-
-void createNode(struct TreeNode** root, char *msg) {
-    if (!(*root = (struct TreeNode*)malloc(sizeof(struct TreeNode)))) {
-        puts("Critical error! Unable to allocate memory!");
-        _getch();
-        while (getchar() != '\n');
-        exit(0);
-    }
-    strcpy((*root)->txt, msg);
-    (*root)->left = (*root)->right = NULL;
-}
-
-int addItem(struct TreeNode** root, char *msg) {
-    if (!(*root)) {
-        createNode(root, msg);
-        return 1;
-    }
-
-    if (!strcmp((*root)->txt, msg)) {
-        return 0;
-    }
-
-    else if (strcmp((*root)->txt, msg) > 0) {
-        return addItem(&((*root)->left), msg);
-    }
-
-    else {
-        return addItem(&((*root)->right), msg);
-    }
-}
-
-void printInorder(struct TreeNode* root) {
-    if (!root) {
-        return;
-    }
-
-    printInorder(root->left);
-    puts(root->txt);
-    printInorder(root->right);
-}
-
-void printPreorder(struct TreeNode* root) {
-    if (!root) {
-        return;
-    }
-
-    puts(root->txt);
-    printPreorder(root->left);
-    printPreorder(root->right);
-}
-
-void printPostorder(struct TreeNode* root) {
-    if (!root) {
-        return;
-    }
-
-    printPostorder(root->left);
-    printPostorder(root->right);
-    puts(root->txt);
-}
-
-int deleteItem(struct TreeNode** root, char *msg) {
-    if (!(*root)) {
-        return 0;
-    }
-
-    if (!strcmp((*root)->txt, msg)) {
-
-        if (!(*root)->left && !(*root)->right) {
-            free(*root);
-            *root = NULL;
+            roots[i] = newNode(3, 3);
         }
 
-        else if (!(*root)->left) {
-            struct TreeNode* temp = (*root)->right;
-            strcpy((*root)->txt, temp->txt);
-            (*root)->left = temp->left;
-            (*root)->right = temp->right;
-            free(temp);
-        }
+        int numberOfNodes = 0;
+        printf("Enter the amount of nodes:");
+        scanf("%d", &numberOfNodes);
 
-        else if (!(*root)->right) {
-            struct TreeNode* temp = (*root)->left;
-            strcpy((*root)->txt, temp->txt);
-            (*root)->left = temp->left;
-            (*root)->right = temp->right;
-            free(temp);
-        }
-
-        else {
-            struct TreeNode* temp = (*root)->right;
-            while (temp->left) {
-                temp = temp->left;
-            }
-            strcpy((*root)->txt, temp->txt);
-            deleteItem(&(*root)->right, temp->txt);
-        }
-
-        return 1;
-    }
-
-    else if (strcmp((*root)->txt, msg) > 0) {
-        return deleteItem(&((*root)->left), msg);
-    }
-
-    else {
-        return deleteItem(&((*root)->right), msg);
-    }
-}
-
-int find(struct TreeNode* root, char msg[256]) {
-    if (!root) {
-        return 0;
-    }
-
-    if (!strcmp(root->txt, msg)) {
-        return 1;
-    }
-
-    if (strcmp(root->txt, msg) > 0) {
-        return find(root->left, msg);
-    }
-
-    else {
-        return find(root->right, msg);
-    }
-}
-
-void push(struct StackNode** stack_head, char msg[256]) {
-    struct StackNode* new_node;
-    new_node = (struct StackNode*)malloc(sizeof(struct StackNode));
-    if (!new_node) {
-        puts("Critical error! Unable to allocate memory!");
-        _getch();
-        while (getchar() != '\n');
-        exit(0);
-    }
-    strcpy(new_node->txt, msg);
-    new_node->prev = NULL;
-    if (*stack_head) {
-        (*stack_head)->prev = new_node;
-    }
-    new_node->next = *stack_head;
-    *stack_head = new_node;
-}
-
-void pop(struct StackNode** stack_head) {
-    struct StackNode* curr = *stack_head;
-    if (curr == NULL) {
-        puts("No more nodes to pop");
-        return;
-    }
-    while (curr->next) {
-        curr = curr->next;
-    }
-    if (curr == *stack_head) {
-        *stack_head = NULL;
-    }
-    else {
-        curr->prev->next = NULL;
-    }
-    char txt[256];
-    strcpy(txt, curr->txt);
-    printf("You popped \"%s\"\n", txt);
-    free(curr);
-}
-
-void buildStack(struct StackNode** stack, struct TreeNode* root) {
-    if (!root) {
-        return;
-    }
-
-    buildStack(stack, root->left);
-    push(stack, root->txt);
-    buildStack(stack, root->right);
-}
-
-void workWithStack(struct StackNode** stack_head) {
-    while (1) {
-        puts("Stack menu. Choose a function to call:\n");
-        puts("1. Pop\n2. Push\n0. Exit\n-------");
-        char choice = _getch();
-        while (getchar() != '\n');
-        if (choice == '0')
-            return;
-
-        switch (choice)
+        for (int i = 0; i < count; i++)
         {
-            case '1':
-                pop(stack_head);
-                puts("Press any key to proceed...");
-                _getch();
-                while (getchar() != '\n');
-                break;
-            case '2':
+            for (int index = 1; index < numberOfNodes; index++)
             {
-                char buf[256] = "";
-                puts("Enter a text to fill in new node (up to 256 characters):");
-                gets(buf);
-                push(stack_head, buf);
-                puts("Successfully pushed!");
-                puts("Press any key to proceed...");
-                _getch();
-                while (getchar() != '\n');
-                break;
+                insert(roots[i], index, symbol = rand() % 8 + 1);
             }
         }
+
+        for (int i = 0; i < count; i++)
+        {
+            printf("\nRoot[%d]:\n", i + 1);
+            printInorder(roots[i]);
+        }
+
+        Node_t* head = NULL;
+
+        for (int i = 0; i < count; i++)
+        {
+            push(&head, roots[i]);
+        }
+
+        printf("\nsize = %d\n", getSize(head));
+
+        while (head) {
+            pop(&head);
+        }
+        printf("\n\nsize = %d\n", getSize(head));
+
+        printf("Continue? -y.\n");
+        while ((getchar()) != '\n');
+        exit = getchar();
+        if (exit == 'y')
+        {
+            continue;
+        }
+        else
+        {
+            return 0;
+        }
     }
+}
+
+struct Node* newNode(int x, int value) {
+    struct Node* root;
+    root = malloc(sizeof(struct Node));
+    root->key = x;
+    root->symbol = value;
+    root->left_child = NULL;
+    root->right_child = NULL;
+    return root;
+}
+
+struct Node* insert(struct Node* root, int x, int value) {
+    if (root == NULL) {
+        return newNode(x, value);
+    }
+    else if (x > root->key) {
+        root->right_child = insert(root->right_child, x, value);
+    }
+    else {
+        root->left_child = insert(root->left_child, x, value);
+    }
+    return root;
+}
+
+void printInorder(struct Node* root) {
+
+    if (root == NULL) {
+        return;
+    }
+
+    if (root->left_child) {
+        printInorder(root->left_child);
+    }
+
+    printf("%d ", root->symbol);
+
+    SUM += root->symbol;
+
+    if (root->right_child) {
+        printInorder(root->right_child);
+    }
+}
+
+int sum() {
+    int temp = SUM;
+    SUM = 0;
+    return temp;
+}
+
+void push(Node_t** head, struct Node* root1) {
+    Node_t* tmp = malloc(sizeof(Node_t));
+    if (tmp == NULL) {
+        exit(STACK_OVERFLOW);
+    }
+
+    tmp->next = *head;
+    tmp->root = root1;
+
+    *head = tmp;
+}
+
+pop(Node_t** head) {
+    Node_t* out;
+    struct Node* root1;
+    if (*head == NULL) {
+        exit(STACK_UNDERFLOW);
+    }
+    out = *head;
+    *head = (*head)->next;
+    root1 = out->root;
+    free(out);
+
+    printf("\nNext element:\n");
+
+    sum();
+
+    printInorder(root1);
+
+    printf("\nSUM:%d\n", sum());
+}
+
+size_t getSize(const Node_t* head) {
+    size_t size = 0;
+    while (head) {
+        size++;
+        head = head->next;
+    }
+    return size;
 }
