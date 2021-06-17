@@ -43,9 +43,9 @@ int main()
 {
     double x, sum = 0.0, epsylon;
     int i = 1;
-    printf("¬ведите x: ");
+    printf("Enter x: ");
     scanf_s("%lf", &x);
-    printf("¬ведите epsylon: ");
+    printf("Enter epsylon: ");
     scanf_s("%lf", &epsylon);
 
     while (x > 6.28f) {
