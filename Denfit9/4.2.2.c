@@ -3,7 +3,7 @@
 #include <stdlib.h> 
 #define Size 128
 
-int Balance(const char* line) {      //Checking balance of brackets
+int Balance(const char* line) {      //проверяем баланс скобок
 	char* processed = line;
 	int openBr = 0;
 	int closeBr = 0;
@@ -29,18 +29,18 @@ int Balance(const char* line) {      //Checking balance of brackets
 		return 0;
 	}
  }
-void CorrectBrackets(char *line) {     //starting to correct brackets
+void CorrectBrackets(char *line) {     //начинаем мменя скобки
 	char* processed = line;
 	int bracketCount = 0;
 	int bracketMax = 0;
 	int procCount = 0;
-	while (*processed != '\0')         //changing all brackets to '{' or '}'
+	while (*processed != '\0')         //идём от противного и сначала меняем всё на фигурные скобки
 	{
 		if (*processed == '(') 
 		{
 			*processed = '{';
 			bracketCount++;
-			if (bracketCount > bracketMax)     //finding max level of brackets
+			if (bracketCount > bracketMax)     //находим максимальный уровень скобок по иерархии
 			{
 				bracketMax = bracketCount;
 			}
@@ -53,11 +53,11 @@ void CorrectBrackets(char *line) {     //starting to correct brackets
 		processed++;
 		procCount++;
 	}
-	for (int i = 0; i < procCount; i++)   //return to starting position
+	for (int i = 0; i < procCount; i++)   //возвращаемся в начало
 	{
 		processed--;
 	}
-	while (*processed != '\0')      // and then changing all brackets with our rules
+	while (*processed != '\0')      //теперь меняем скобки в соответствии с нашими правилами
 	{
 		if (*processed == '{')
 		{
