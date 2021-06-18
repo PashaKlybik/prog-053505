@@ -14,7 +14,7 @@ int strLength(char* str) {
 }
 
 long long int fromChartoLong(char* str) {
-	long long strInt = 0;
+	unsigned long long strInt = 0;
 	for (int i = 0; i < strLength(str) - 1; i++) {
 		strInt += ((int)str[i] - 48) * pow(10, strLength(str) - (i + 2));
 	}
@@ -22,7 +22,7 @@ long long int fromChartoLong(char* str) {
 }
 
 int numLength(long long int num) {
-	long long divider = 10;
+	unsigned long long divider = 10;
 	int length = 1;
 	while (num / divider >= 1) {
 		length++;
@@ -34,10 +34,10 @@ int numLength(long long int num) {
 int main() {
 	int firstStrSize = 10;
 	int secondStrSize = 10;
-	printf("Please enter size of first string(more than 10 symbols) ");
+	printf("Please enter size of first string ");
 	scanf_s("%d", &firstStrSize);
 	fflush(stdin);
-	printf("Please enter size of second string(more than 10 symbols) ");
+	printf("Please enter size of second string ");
 	scanf_s("%d", &secondStrSize);
 	char* firstStr = (char*)malloc(sizeof(char) * firstStrSize);
 	char* secondStr = (char*)malloc(sizeof(char) * secondStrSize);
@@ -49,8 +49,8 @@ int main() {
 	printf("\nPlease enter second string ");
 	fgets(secondStr, secondStrSize, stdin);
 	puts(secondStr);
-	long long int firstStrInt = fromChartoLong(firstStr);
-	long long int secondStrInt = fromChartoLong(secondStr);
+	unsigned long long int firstStrInt = fromChartoLong(firstStr);
+	unsigned long long int secondStrInt = fromChartoLong(secondStr);
 	int sumLength = numLength(firstStrInt + secondStrInt);
 	char* sumStr = (char*)malloc(sizeof(char) * (sumLength + 1));
 	printf("NUm lengl = %d", sumLength);
