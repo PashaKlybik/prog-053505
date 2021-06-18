@@ -50,9 +50,20 @@ void ShowArray(int** mass, int n, int m);
 int main()
 {
     srand(0);
-    int n, m;
+    int n, m, res, res1;
     printf("Enter array size: n, m: ");
-    scanf_s("%d %d", &n, &m);
+    do {
+        res = scanf_s("%d", &n);
+        while (getchar() != '\n');
+        if (res == 1) {}
+        else printf("%s", "Bad,you can enter only numbers.Repeat enter:\n");
+    } while (res != 1);
+    do {
+        res1 = scanf_s("%d", &m);
+        while (getchar() != '\n');
+        if (res1 == 1) {}
+        else printf("%s", "Bad,you can enter only numbers.Repeat enter:\n");
+    } while (res1 != 1);
     int** mass = (int**)malloc(n * sizeof(int*));
     int** massCopy = (int**)malloc(n * sizeof(int*));
     for (int i = 0; i < n; i++)
