@@ -1,81 +1,105 @@
 #include <stdio.h>
-#include <malloc.h>
 #include <math.h>
+#include <stdlib.h>
+
 int main() {
-	int n = 0;
-	int m = 0;
-	int zero = 0;
-	float correct = 0.00000001;
+	int m, n
+	double* a;
+	int i, j, rang;
+	printf("m= ");
+	scanf_s("%d", &m);
+	while (m <= 0)           //исправим возможно создание "невозможной" матрицы
+	{
+		printf("Very funny");
+		scanf_s("%d", &m);
+	}
 	printf("n=");
 	scanf_s("%d", &n);
-	printf("m=");
-	scanf_s("%d", &m);
-	float** A = (float**)malloc(n * sizeof(float*));
-	for (int i = 0; i < n; i++) {
-		A[i] = (float*)malloc(m * sizeof(float));
-	}
-	for (int i = 0; i < n; i++)
+	while (n <= 0)                          
 	{
-		for (int j = 0; j < m; j++)
-		{   
-			printf("Enter element of matrix [%d][%d]  ",i+1,j+1);
-			scanf_s("%f", &A[i][j]);
+		printf("Very funny");
+		scanf_s("%d", &n);
+	}
+	a = (double*)malloc(m * n * sizeof(double));
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < n; j++) {
+			printf("Enter element of matrix [%d][%d]  ", i + 1, j + 1);
+			scanf_s("%lf", &(a[i * n + j]));
 		}
 	}
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			printf("%.0f ", A[i][j]);
+	printf("\n\n");
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < n; j++) {
+			printf("%.1lf   ", a[i * n + j]);
 		}
 		printf("\n");
 	}
-	int maxrows = -1;
-	float processedEl;
-	int rang = -1;
-	for (int i = 0, j = 0; i < n && j < m;)
-	{
-		processedEl = 0.0;
-		for (int k = i; k < n; k++)
+	printf("\n\n");
+	rang = gaussMethod(m, n, a);
+	printf("Rang=%d\n", rang);
+	free(a);
+	return 0;
+}
+
+int gaussMethod(int m, int n, double* a) {
+	int i, j;
+	int zero = 0;
+	double processedEl;
+	int  k, maxRows;
+
+	i = 0; j = 0;
+	while (i < m && j < n) {
+		processedEl = 0.0;                                 
+		for (k = i; k < m; k++) 
 		{
-			if (fabs(A[k][j]) > processedEl)
+			if (fabs(a[k * n + j]) > processedEl)
 			{
-				maxrows = k;
-				processedEl = fabsf(A[k][j]);
+				maxRows = k;
+				processedEl = fabs(a[k * n + j]);
 			}
 		}
-		if (processedEl <= correct) {
-			for (int k = i; k < n; k++) {
-				A[k][j] = 0.0;
+		if (processedEl <= 0.001) 
+		{                  			 //приравниваем погрешность к нулю
+			for (k = i; k < m; k++) 
+			{
+				a[k * n + j] = 0.0;
 			}
 			j++;
 			continue;
 		}
 
-		if (maxrows != i)
+		if (maxRows != i)               // сравним строки  и поменяем местами
 		{
-			for (int k = j; k < m; k++)
+			for (k = j; k < n; k++) 
 			{
-				processedEl = A[i][k];
-				A[i][k] = A[maxrows][k];
-				A[maxrows][k] = -processedEl;
+				processedEl = a[i * n + k];
+				a[i * n + k] = a[maxRows * n + k];
+				a[maxRows * n + k] = (-processedEl);      //соответственно поменяем и знак
 			}
 		}
-
-		i++; j++;
-		rang = i;
+		for (k = i + 1; k < m; k++)            // обнуляем столбец 
+		{
+			processedEl = (-a[k * n + j] / a[i * n + j]);
+			a[k * n + j] = 0.0;                     //исправляем возможную погрешность
+			for (maxRows = j + 1; maxRows < n; maxRows++)
+			{
+				a[k * n + maxRows] += processedEl * a[i * n + maxRows];
+			}
+		}
+		i++; j++;           
 	}
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if (A[i][j] == 0) {
+	for (int i = 0; i < n; i++)                //на всякий случай проверим на ноль отдельно
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (a[i * j] == 0)
+			{
 				zero++;
 			}
 		}
 	}
 	if (zero == n * m) {
-		rang = 0;
+		i = 0;
 	}
-	printf("Rang is %d", rang);
-	for (int i = 0; i < n; i++) {
-		free(A[i]);
-	}
-	free(A);
+	return i;
 }
