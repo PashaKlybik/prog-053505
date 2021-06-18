@@ -1,4 +1,8 @@
-﻿#include <stdio.h>
+﻿//lab 4.1 var#10
+/*Морзянка. Вводимый с клавиатуры текст перевести в
+последовательность точек и тире с помощью азбуки Морзе.*/
+
+#include <stdio.h>
 #define lenth 256
 #include <windows.h>
 int main()
