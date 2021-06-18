@@ -11,7 +11,7 @@ typedef struct tnode {
     struct tnode* right;
 }Tnode;
 
-char* doublestr(const char* str) {
+char* doublestr(const char* str) {                 //клонирование строки
     char* d = malloc(strlen(str) + 1);   
     if (d == NULL) 
     {
@@ -21,7 +21,7 @@ char* doublestr(const char* str) {
     return d;                           
 }
 
-void treeprint(Tnode* tr, int level) {
+void treeprint(Tnode* tr, int level) {           //вывод дерева, хотя по условию,вроде, этого не требуется
 
     if (tr != NULL) 
     {
@@ -34,7 +34,7 @@ void treeprint(Tnode* tr, int level) {
     }
 }
 
- Tnode* addtree(struct tnode* tr, char* w) {
+ Tnode* addtree(struct tnode* tr, char* w) {       //добавление элемента дерева
     if (tr == NULL) 
     {
         tr = (Tnode*)malloc(sizeof(Tnode));
@@ -54,7 +54,7 @@ void treeprint(Tnode* tr, int level) {
     return tr;
 }
 
-void deletetree(Tnode* tree) {
+void deletetree(Tnode* tree) {                       //очистка дерева
     if (tree != NULL) 
     {
         deletetree(tree->left);
@@ -63,7 +63,7 @@ void deletetree(Tnode* tree) {
         free(tree);
     }
 }
-int rightword(char* str)
+int rightword(char* str)                       //проверка является ли слово палиндромом
 {
     int lenght = strlen(str);
     for (int i = 0; i < lenght / 2; i++)
@@ -74,7 +74,7 @@ int rightword(char* str)
     return 1;
 }
 
-void palindrome(Tnode* tr) {
+void palindrome(Tnode* tr) {                    //поиск палиндромов в дереве
 
     if (tr != NULL) 
     {
