@@ -13,53 +13,6 @@ typedef struct node {
 	struct node* pPrev;
 } Node;
 
-void addNode(int data, BinaryNode** node);
-void makeStack(BinaryNode* node, Node** stack1, Node** stack2);
-void preOrder(BinaryNode* node);
-void insertLast(int x, Node** head, Node** tail);
-void push(Node** stack, int x);
-void print(Node* s);
-void inOrder(BinaryNode* node);
-void postOrder(BinaryNode* node);
-Node* init(int x);
-int getSize(Node* s);
-int top(Node* s);
-void pop(Node** tail, Node* head);
-
-
-void main(void)
-{
-	int randValue, size;
-	BinaryNode* root = NULL;
-	Node* head = NULL;
-	Node* tail = NULL;
-	Node* stack = NULL;
-	Node* stack2 = NULL;
-
-	for (int i = 0; i < 10; i++) {
-		randValue = rand() % 100 + 1;
-		insertLast(randValue, &head, &tail);
-	}
-	printf("Your list:\n");
-	print(head);
-	size = getSize(head);
-	for (int i = 0; i < size; i++) {
-		addNode(top(tail), &root);
-		pop(&tail, head);
-	}
-	printf("preOrder:\n");
-	preOrder(root);
-	printf("\ninOrder:\n");
-	inOrder(root);
-	printf("\npostOrder:\n");
-	postOrder(root);
-	makeStack(root, &stack, &stack2);
-	printf("\nEven nodes:\n");
-	print(stack);
-	printf("Odd nodes:\n");
-	print(stack2);
-}
-
 
 int getSize(Node* s) {
 	Node* temp = s;
@@ -94,19 +47,7 @@ void addNode(int data, BinaryNode** node)
 	}
 }
 
-void makeStack(BinaryNode* node, Node** stack, Node** stack2)
-{
-	if ((node->data) % 2 == 0)
-		push(&(*stack), node->data);
-	else
-		push(&(*stack2), node->data);
 
-	if (node->leftChild)
-		makeStack(node->leftChild, &(*stack), &(*stack2));
-	if (node->rightChild)
-		makeStack(node->rightChild, &(*stack), &(*stack2));
-
-}
 void preOrder(BinaryNode* node)
 {
 	printf("%d ", node->data);
@@ -167,6 +108,20 @@ void push(Node** makeStack, int x) {
 	}
 }
 
+void makeStack(BinaryNode* node, Node** stack, Node** stack2)
+{
+	if ((node->data) % 2 == 0)
+		push(&(*stack), node->data);
+	else
+		push(&(*stack2), node->data);
+
+	if (node->leftChild)
+		makeStack(node->leftChild, &(*stack), &(*stack2));
+	if (node->rightChild)
+		makeStack(node->rightChild, &(*stack), &(*stack2));
+
+}
+
 void print(Node* s) {
 	while (s != NULL) {
 		printf("%d ", s->data);
@@ -193,3 +148,39 @@ void pop(Node** tail, Node* head) {
 		(*tail) = (*tail)->pPrev;
 	}
 }
+
+
+void main(void)
+{
+	int randValue, size;
+	BinaryNode* root = NULL;
+	Node* head = NULL;
+	Node* tail = NULL;
+	Node* stack = NULL;
+	Node* stack2 = NULL;
+
+	for (int i = 0; i < 10; i++) {
+		randValue = rand() % 100 + 1;
+		insertLast(randValue, &head, &tail);
+	}
+	printf("Your list:\n");
+	print(head);
+	size = getSize(head);
+	for (int i = 0; i < size; i++) {
+		addNode(top(tail), &root);
+		pop(&tail, head);
+	}
+	printf("preOrder:\n");
+	preOrder(root);
+	printf("\ninOrder:\n");
+	inOrder(root);
+	printf("\npostOrder:\n");
+	postOrder(root);
+	makeStack(root, &stack, &stack2);
+	printf("\nEven nodes:\n");
+	print(stack);
+	printf("Odd nodes:\n");
+	print(stack2);
+}
+
+
