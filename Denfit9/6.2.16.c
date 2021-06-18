@@ -365,12 +365,12 @@ void clear(GroupsInformation* groups) {
     while (getLenght(groups))
         deleteByNum(groups->head->groupNumber, groups);
 }
-void save(GroupsInformation* students)
+void saveInput(GroupsInformation* students)
 {
     FILE* fp;
-    fp = fopen("Output.txt", "w");
+    fp = fopen("Input.txt", "w");
     if (fp == NULL) {
-        printf("Error while trying to open output file\n");
+        printf("Error while trying to open input file\n");
         exit(1);
     }
     else {
@@ -385,7 +385,34 @@ void save(GroupsInformation* students)
             fprintf(fp, "%d\n", p->subject5);
             p = p->Next;
         }
-        printf("Succesfully saved!\n");
+        printf("Input Succesfully saved!\n");
+    }
+    fclose(fp);
+}
+void saveOutput(GroupsInformation* students)
+{
+    FILE* fp;
+    fp = fopen("Output.txt", "w");
+    if (fp == NULL) {
+        printf("Error while trying to open output file\n");
+        exit(1);
+    }
+    else {
+        Node* p = students->head;
+        while (p != NULL) {
+            float average = 0;
+            average = (float)(p->subject1 + p->subject2 + p->subject3 + p->subject4 + p->subject5) / 5;
+            fprintf(fp, "%d; ", p->groupNumber);
+            fprintf(fp, "%d; ", p->course);
+            fprintf(fp, "%d; ", p->subject1);
+            fprintf(fp, "%d; ", p->subject2);
+            fprintf(fp, "%d; ", p->subject3);
+            fprintf(fp, "%d; ", p->subject4);
+            fprintf(fp, "%d; ", p->subject5);
+            fprintf(fp, "%.2f\n", average);
+            p = p->Next;
+        }
+        printf("Output Succesfully saved!\n");
     }
     fclose(fp);
 }
@@ -566,7 +593,8 @@ int main()
             showAllByCourses(&studs, courseNum);
             break;
         case 7:
-            save(&studs);
+            saveInput(&studs);
+            saveOutput(&studs);
             break;
         default:
             break;
