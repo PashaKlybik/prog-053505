@@ -24,7 +24,7 @@ typedef struct groupsInformation
     Node* tail;
 }GroupsInformation;
 
-void pushBack(GroupsInformation* groups, Node* stud) {
+void pushBack(GroupsInformation* groups, Node* stud) {  //добавление нового элемента списка
     stud->Next = NULL;
     stud->Prev = NULL;
     Node* current = (Node*)malloc(sizeof(Node));
@@ -51,7 +51,7 @@ void pushBack(GroupsInformation* groups, Node* stud) {
     }
 }
 
-void deleteByNum(int Num, GroupsInformation* groups) {
+void deleteByNum(int Num, GroupsInformation* groups) {    // удаление группы по её номеру
 
     if (getLenght(groups) > 1) {
         if (groups->head->groupNumber == Num) {
@@ -85,7 +85,7 @@ void deleteByNum(int Num, GroupsInformation* groups) {
     }
 }
 
-void Sort(GroupsInformation* groups, Node* stud) {
+void Sort(GroupsInformation* groups, Node* stud) {      //сортировка пузырьком по среднему баллу от большего к меньшему
     Node* temp = groups->head;
     Node* tempNext = temp->Next;
     int ended = 1;
@@ -131,7 +131,7 @@ void Sort(GroupsInformation* groups, Node* stud) {
 
     }
 }
-void SortByCourse(GroupsInformation* groups, Node* stud) {
+void SortByCourse(GroupsInformation* groups, Node* stud) {    // сортировка по курсу группы, используется в дальнейшем для сравнения результатов двух сессий одной группы
     Node* temp = groups->head;
     Node* tempNext = temp->Next;
     int ended = 1;
@@ -178,7 +178,7 @@ void SortByCourse(GroupsInformation* groups, Node* stud) {
 }
 
 
-void showInfo(Node* stud) {
+void showInfo(Node* stud) {                               //простой вывод информации одной группы
     printf("Group number: %d\n", stud->groupNumber);
     printf("Course: %d\n", stud->course);
     printf("Subject 1 mark: %d\n", stud->subject1);
@@ -189,7 +189,7 @@ void showInfo(Node* stud) {
     printf("Average mark is: %.2f\n", (float)(stud->subject1 + stud->subject2 + stud->subject3 + stud->subject4 + stud->subject5) / 5);
     printf("________________________________________\n");
 }
-void infoByCourse(Node* stud, int courseNum) {
+void infoByCourse(Node* stud, int courseNum) {            // вывод информации по номеру курса
     if (stud->course == courseNum) {
         printf("Group number: %d\n", stud->groupNumber);
         printf("Course: %d\n", stud->course);
@@ -202,7 +202,7 @@ void infoByCourse(Node* stud, int courseNum) {
         printf("________________________________________\n");
     }
 }
-void infoByGroup(GroupsInformation* groups, Node* user, int groupNum) {
+void infoByGroup(GroupsInformation* groups, Node* user, int groupNum) {          //вывод информации по номеру группы
 
     if (user->groupNumber == groupNum) {
         printf("Group number: %d\n", user->groupNumber);
@@ -216,7 +216,9 @@ void infoByGroup(GroupsInformation* groups, Node* user, int groupNum) {
         printf("________________________________________\n");
     }
 }
-void groupComparer(GroupsInformation* groups, Node* stud, int groupNum)
+void groupComparer(GroupsInformation* groups, Node* stud, int groupNum)         /* сравнение результатов двух сессий одной группы 
+                                                                             (по условию сравниваются только прошлая и нынешняя сессии, для этого и используется сортировка, 
+                                                                             чтобы мы сразу имели на руках соседние сессии)*/
 {
     SortByCourse(groups, stud);
     Node* current = groups->head;
@@ -240,7 +242,7 @@ void groupComparer(GroupsInformation* groups, Node* stud, int groupNum)
 
     current = groups->head;
     current = current->Next;
-    if (current->course == groupCourse1 - 1)
+    if (current->course == groupCourse1 - 1)                //чтобы не сравнивать сессии допустим 1 и 3 курса, так как до 3 курса идёт 2
     {
         while (current != NULL)
         {
@@ -281,7 +283,7 @@ void groupComparer(GroupsInformation* groups, Node* stud, int groupNum)
     }
 }
 
-void showAll(GroupsInformation* groups) {
+void showAll(GroupsInformation* groups) {                //вывод информации о каждой группе
 
     if (groups->head != NULL) {
         Node* current = groups->head;
@@ -294,10 +296,10 @@ void showAll(GroupsInformation* groups) {
         showInfo(current);
     }
     else {
-        printf("\nYour table is empty\n");
+        printf("\nYour groups are empty\n");
     }
 }
-void showAllByCourses(GroupsInformation* groups, int courseNum) {
+void showAllByCourses(GroupsInformation* groups, int courseNum) {     //вывод информации групп определённого курса
 
     if (groups->head != NULL) {
         Node* current = groups->head;
@@ -310,10 +312,10 @@ void showAllByCourses(GroupsInformation* groups, int courseNum) {
         infoByCourse(current, courseNum);
     }
     else {
-        printf("\nYour table is empty\n");
+        printf("\nYour groups are empty\n");
     }
 }
-void showAllByGroup(GroupsInformation* groups, int groupNum) {
+void showAllByGroup(GroupsInformation* groups, int groupNum) {       //вывод информации одной группы за разные курсы
 
     if (groups->head != NULL) {
         Node* current = groups->head;
@@ -327,10 +329,10 @@ void showAllByGroup(GroupsInformation* groups, int groupNum) {
         groupComparer(groups, current, groupNum);
     }
     else {
-        printf("\nYour table is empty\n");
+        printf("\nYour groups are empty\n");
     }
 }
-int getLenght(GroupsInformation* groups) {
+int getLenght(GroupsInformation* groups) {             //получаем информацию о длине нашего списка
     if (groups->head != NULL) {
         Node* current = groups->head;
         int counter = 1;
@@ -345,7 +347,7 @@ int getLenght(GroupsInformation* groups) {
     return 0;
 }
 
-bool checkNum(int Num, GroupsInformation* groups) {
+bool checkNum(int Num, GroupsInformation* groups) {             //проверяем есть ли группа, которую мы хотим удалить (эта функция используется при удалении)
     Node* current = groups->head;
 
     while (current) {
@@ -361,11 +363,11 @@ bool checkNum(int Num, GroupsInformation* groups) {
 }
 
 
-void clear(GroupsInformation* groups) {
+void clear(GroupsInformation* groups) {                      //очищаем весь список
     while (getLenght(groups))
         deleteByNum(groups->head->groupNumber, groups);
 }
-void saveInput(GroupsInformation* students)
+void saveInput(GroupsInformation* students)                  //сохраняем отредактированный файл входа
 {
     FILE* fp;
     fp = fopen("Input.txt", "w");
@@ -389,7 +391,7 @@ void saveInput(GroupsInformation* students)
     }
     fclose(fp);
 }
-void saveOutput(GroupsInformation* students)
+void saveOutput(GroupsInformation* students)                 //сохраняем файл выхода
 {
     FILE* fp;
     fp = fopen("Output.txt", "w");
@@ -421,7 +423,7 @@ int main()
 {
     GroupsInformation studs = { NULL,NULL };
     FILE* file;
-    file = fopen("Input.txt", "r"); //input.txt
+    file = fopen("Input.txt", "r"); 
     int c = 0;
     char str[255];
     char* next = 0;
