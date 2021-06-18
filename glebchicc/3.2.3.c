@@ -1,7 +1,9 @@
-﻿#include <stdio.h> 
-#define n 10
+#include <stdio.h> 
+#include <string.h>
+#include <math.h>
 
-void encryption(char a[n * n], char m[n][n]) {
+void encryption(char a[], char m[][(int)ceil(sqrt(strlen(a)))]) {
+    int n = (int)ceil(sqrt(strlen(a)));
     int count = 0;
     for (int counter = 0; counter < n; ++counter) {
         for (int i = counter; i < n - counter; ++i) {
@@ -42,13 +44,12 @@ void encryption(char a[n * n], char m[n][n]) {
         }
     }
     for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) printf_s("%c  ", m[i][j]);
-        printf_s("\n");
+        for (int j = 0; j < n; ++j) printf("%c", m[i][j]);
     }
-    printf_s("\n");
+    printf("\n");
 }
 
-void decryption(char m[n][n], char a[n * n]) {
+void decryption(int n, char m[][n], char a[]) {
     int count = 0;
     for (int counter = 0; counter < n; ++counter) {
         for (int i = counter; i < n - counter; ++i) {
@@ -89,12 +90,15 @@ void decryption(char m[n][n], char a[n * n]) {
         }
     }
     for (int i = 0; i < n * n; ++i) {
-        printf_s("%c", a[i]);
+        printf("%c", a[i]);
     }
 }
 
 int main() {
-    char a[n * n];
+    char a[101];
+    printf("Enter the line (not more than 100 symbols): ");
+    fgets(a, 100, stdin);
+    int n = ceil(sqrt(strlen(a)));
     char m[n][n];
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -102,8 +106,6 @@ int main() {
         }
     }
     char b[n * n];
-    printf_s("Enter the line (not more than 100 symbols): ");
-    fgets(a, 100, stdin);
     encryption(a, m);
-    decryption(m, b);
+    decryption(n, m, b);
 }
