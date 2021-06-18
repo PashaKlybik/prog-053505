@@ -8,7 +8,7 @@ typedef struct service {
     struct serivce* prev;
 } Service;
 
-void Sort(Service* serv) {
+void Sort(Service* serv) {           //сортировка пузырьком по времени стояния в очереди в сервис
     Service* temp = serv;
     Service* tempNext = temp->next;
     int ended = 1;
@@ -37,7 +37,7 @@ void Sort(Service* serv) {
     }
 }
 
-void NewService(Service* serv, int number) {
+void NewService(Service* serv, int number) {              //создание нового сервиса
     Service* p = (Service*)malloc(sizeof(Service));
     p->timeRequired = rand() % 100;
     p->prev = serv;
@@ -61,9 +61,11 @@ int main()
     Service* start = servce;
     printf("Number of services is : \n");
     scanf_s("%d", &serviceNum);
-    while (serviceNum > 10 || serviceNum<=0) 
+    while (serviceNum > 10 || serviceNum<=0)            /*заблокировал ввод отрицательного и
+                                                    большого числа сервисов, чтобы они потом в консоли красиво выводились*/
+        
     {
-        error = rand() %4 + 1;
+        error = rand() %4 + 1;         //просто выдача рандомных сообщений при неудачном вводе, чтобы не было совсем скучно :)
         switch (error)
         {
         case 1:
@@ -83,7 +85,7 @@ int main()
         }
         scanf_s("%d", &serviceNum);
     }
-    printf("Write how much time you have (in minutes)\n");
+    printf("Write how much time you have (in minutes)\n");         //вводим время, которое можем потратить на прохождение сервисов
     scanf_s("%d", &timeGot);
     while (timeGot <= 0 || timeGot >=400) 
     {
@@ -102,15 +104,15 @@ int main()
     }
     printf("\n");
     servce = start;
-    while (servce) {
-        printf("%d      %d   ", servce->number, servce->timeRequired);
+    while (servce) {                                                   //выводим сервисы
+        printf("%d      %d   ", servce->number, servce->timeRequired);         
         servce = servce->next;
     }
     servce = start;
     printf("\n\nNow to your perfect route: \n");
     Sort(servce);
     servce = start;
-    for (int i = 0; i < serviceNum; i++)
+    for (int i = 0; i < serviceNum; i++)      //выводим отсортированные сервисы
     {
         printf("Num | time  ");
     }
@@ -120,7 +122,7 @@ int main()
         printf("%d      %d    ", servce->number, servce->timeRequired);
         servce = servce->next;
     }
-    printf("\n\nSo you can visit services in an order like this:\n");
+    printf("\n\nSo you can visit services in an order like this:\n"); // выводим "идеальный" маршрут
     servce = start;
     while (servce) {
         routeCount += servce->timeRequired;
@@ -132,7 +134,7 @@ int main()
         }
         servce = servce->next;
     }
-    while (servce->prev) {
+    while (servce->prev) {                //чистим за собой
         servce = servce->prev;
         free(servce->next);
     }
