@@ -1,0 +1,20 @@
+'TimeTableBSUIR 2000000$ Need_some_hardware
+Planning 05.03.2015 06.05.2020 1 ,
+Designing 21.11.2019 01.04.2021 1 ,
+Maintaining 03.08.1994 11.01.1997 0 .
+-People:
+Rogov ;
+Login ;
+Chmurov .
++
+'AutomaticCashRegister 1300$ Need_some_hardware
+Planning 06.03.2018 06.05.2020 1 ,
+Designing 11.01.2010 01.04.2021 1 ,
+Maintaining 02.08.2003 11.01.2005 0 .
+-People:
+Musk;
+Bezos .
++
+
+
+
