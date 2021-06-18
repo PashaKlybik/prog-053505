@@ -3,17 +3,18 @@
 #include <stdio.h>
 #include <locale.h>
 
-
-int Length(char str[]) {
+int strLength(char* str) {
+	int length = 0;
 	int i = 0;
-	while (str[i] != '\n' && str[i] != '\0') {
+	while (str[i] != '\0') {
+		length++;
 		i++;
 	}
-	return i;
+	return length;
 }
 
-int WordCheck(char word[], char buff[]) {
-	for (int i = 0; i < Length(word); i++) {
+int checkWord(char word[], char buff[]) {
+	for (int i = 0; i < strLength(word); i++) {
 		if (word[i] == '_')
 			continue;
 		else if (word[i] != buff[i])
@@ -39,8 +40,8 @@ int main() {
 	puts("Совпадения в текстовом документе: ");
 
 	while (fgets(buffer, 128, file) != NULL) {
-		if (Length(word) == Length(buffer))
-			if (WordCheck(word, buffer) == 1) {
+		if (strLength(word) == strLength(buffer))
+			if (checkWord(word, buffer) == 1) {
 				printf(buffer);
 			}
 	}
