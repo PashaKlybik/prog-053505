@@ -1,4 +1,12 @@
-﻿#include <stdio.h>
+﻿//lab#6 var#19
+/*В текстовом файле записаны целые числа.Построить бинарное
+дерево поиска, в узлах которого хранятся числа из файла.
+Разработать функцию, определяющую количество нечетных
+элементов.*/
+
+
+
+#include <stdio.h>
 #include <malloc.h>
 //description of the tree structure
 typedef struct node
