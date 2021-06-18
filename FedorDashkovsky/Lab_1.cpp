@@ -2,7 +2,6 @@
 
 #include <vcl.h>
 #pragma hdrstop
-
 #include "Lab1_C.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
