@@ -51,14 +51,24 @@ int main()
     int x, period, cycles = 1;
 
     printf_s("Enter X:");
-    scanf_s("%d", &x);
+    do {
+        res = scanf_s("%d", &(x));
+        while (getchar() != '\n');
+        if (res == 1) {}
+        else printf("%s", "Bad,you can enter only numbers.Repeat enter:\n");
+    } while (res != 1);
     if (x > 180)
     {
         period = x / 180;
         x -= 180 * period;
     }
     printf_s("Enter epsilon: ");
-    scanf_s(" %f", &epsilon);
+    do {
+        res1 = scanf_s("%d", &(epsilon));
+        while (getchar() != '\n');
+        if (res1 == 1) {}
+        else printf("%s", "Bad,you can enter only numbers.Repeat enter:\n");
+    } while (res1 != 1);
     radian = (float)x / 180 * 3.14;
     printf_s("sin(x) using recursion = %lf\n", Recursion(radian, epsilon, &cycles));
     printf_s("n1: %d\n\n", cycles);
