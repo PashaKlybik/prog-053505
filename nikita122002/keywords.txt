@@ -1,0 +1,2 @@
+break case int getchar char bool for printf
+

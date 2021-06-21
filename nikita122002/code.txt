@@ -1,0 +1,13 @@
+
+int main()
+{
+    int k;
+char h;
+bool t;
+    for ( k = 0; k < 10; k++ ) {
+        printf( "%d\n", k );
+    }
+    getchar();
+}
+
+
